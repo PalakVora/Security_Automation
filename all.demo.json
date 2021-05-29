@@ -1,0 +1,267 @@
+[
+    {
+        "request": {
+            "method": "GET",
+            "url": "https://reqres.in/api/users/",
+            "scheme": "https",
+            "netloc": "reqres.in",
+            "path": "/api/users/",
+            "query": {
+                "page": "2"
+            },
+            "body": null,
+            "data": null,
+            "headers": {
+                "Accept": "application/json, */*",
+                "Content-Type": "application/json",
+                "User-Agent": "RESTinstance/1.1.0"
+            },
+            "proxies": {},
+            "timeout": [
+                null,
+                null
+            ],
+            "cert": null,
+            "sslVerify": true,
+            "allowRedirects": true,
+            "timestamp": {
+                "utc": "2021-05-18T06:58:46.024998+00:00",
+                "local": "2021-05-18T12:28:46.024998+05:30"
+            }
+        },
+        "response": {
+            "seconds": 0.9127770000000001,
+            "status": 200,
+            "body": {
+                "page": 2,
+                "per_page": 6,
+                "total": 12,
+                "total_pages": 2,
+                "data": [
+                    {
+                        "id": 7,
+                        "email": "michael.lawson@reqres.in",
+                        "first_name": "Michael",
+                        "last_name": "Lawson",
+                        "avatar": "https://reqres.in/img/faces/7-image.jpg"
+                    },
+                    {
+                        "id": 8,
+                        "email": "lindsay.ferguson@reqres.in",
+                        "first_name": "Lindsay",
+                        "last_name": "Ferguson",
+                        "avatar": "https://reqres.in/img/faces/8-image.jpg"
+                    },
+                    {
+                        "id": 9,
+                        "email": "tobias.funke@reqres.in",
+                        "first_name": "Tobias",
+                        "last_name": "Funke",
+                        "avatar": "https://reqres.in/img/faces/9-image.jpg"
+                    },
+                    {
+                        "id": 10,
+                        "email": "byron.fields@reqres.in",
+                        "first_name": "Byron",
+                        "last_name": "Fields",
+                        "avatar": "https://reqres.in/img/faces/10-image.jpg"
+                    },
+                    {
+                        "id": 11,
+                        "email": "george.edwards@reqres.in",
+                        "first_name": "George",
+                        "last_name": "Edwards",
+                        "avatar": "https://reqres.in/img/faces/11-image.jpg"
+                    },
+                    {
+                        "id": 12,
+                        "email": "rachel.howell@reqres.in",
+                        "first_name": "Rachel",
+                        "last_name": "Howell",
+                        "avatar": "https://reqres.in/img/faces/12-image.jpg"
+                    }
+                ],
+                "support": {
+                    "url": "https://reqres.in/#support-heading",
+                    "text": "To keep ReqRes free, contributions towards server costs are appreciated!"
+                }
+            },
+            "headers": {
+                "Date": "Tue, 18 May 2021 06:58:46 GMT",
+                "Content-Type": "application/json; charset=utf-8",
+                "Transfer-Encoding": "chunked",
+                "Connection": "keep-alive",
+                "X-Powered-By": "Express",
+                "Access-Control-Allow-Origin": "*",
+                "Etag": "W/\"406-ut0vzoCuidvyMf8arZpMpJ6ZRDw\"",
+                "Via": "1.1 vegur",
+                "Cache-Control": "max-age=14400",
+                "CF-Cache-Status": "REVALIDATED",
+                "cf-request-id": "0a1fde27ce0000321d2820e000000001",
+                "Expect-CT": "max-age=604800, report-uri=\"https://report-uri.cloudflare.com/cdn-cgi/beacon/expect-ct\"",
+                "Report-To": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report?s=WY5QzB59trYSGc0MFmqyKF46Z8qherTS1EY9YjbFPGIEGOqLYvnWuP%2Fnd09GCgS9OHG5D9Sq8lKMSncU22ded9k31SfzjYNQf9E%3D\"}],\"group\":\"cf-nel\",\"max_age\":604800}",
+                "NEL": "{\"report_to\":\"cf-nel\",\"max_age\":604800}",
+                "Vary": "Accept-Encoding",
+                "Server": "cloudflare",
+                "CF-RAY": "651332ec7cbe321d-BOM",
+                "Content-Encoding": "gzip",
+                "alt-svc": "h3-27=\":443\"; ma=86400, h3-28=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+            }
+        },
+        "schema": {
+            "$schema": "http://json-schema.org/draft-07/schema#",
+            "title": "GET https://reqres.in/api/users/",
+            "description": "ReadAPI: Get Employee",
+            "default": true,
+            "examples": [],
+            "type": "object",
+            "properties": {
+                "request": {
+                    "type": "object",
+                    "properties": {
+                        "body": {
+                            "type": "null"
+                        },
+                        "query": {
+                            "type": "object",
+                            "properties": {
+                                "page": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "page"
+                            ]
+                        }
+                    }
+                },
+                "response": {
+                    "type": "object",
+                    "properties": {
+                        "body": {
+                            "type": "object",
+                            "properties": {
+                                "page": {
+                                    "type": "integer",
+                                    "default": 2
+                                },
+                                "per_page": {
+                                    "type": "integer",
+                                    "default": 6
+                                },
+                                "total": {
+                                    "type": "integer",
+                                    "default": 12
+                                },
+                                "total_pages": {
+                                    "type": "integer",
+                                    "default": 2
+                                },
+                                "data": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "first_name": {
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "type": "string"
+                                            },
+                                            "avatar": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "avatar",
+                                            "email",
+                                            "first_name",
+                                            "id",
+                                            "last_name"
+                                        ]
+                                    },
+                                    "default": [
+                                        {
+                                            "id": 7,
+                                            "email": "michael.lawson@reqres.in",
+                                            "first_name": "Michael",
+                                            "last_name": "Lawson",
+                                            "avatar": "https://reqres.in/img/faces/7-image.jpg"
+                                        },
+                                        {
+                                            "id": 8,
+                                            "email": "lindsay.ferguson@reqres.in",
+                                            "first_name": "Lindsay",
+                                            "last_name": "Ferguson",
+                                            "avatar": "https://reqres.in/img/faces/8-image.jpg"
+                                        },
+                                        {
+                                            "id": 9,
+                                            "email": "tobias.funke@reqres.in",
+                                            "first_name": "Tobias",
+                                            "last_name": "Funke",
+                                            "avatar": "https://reqres.in/img/faces/9-image.jpg"
+                                        },
+                                        {
+                                            "id": 10,
+                                            "email": "byron.fields@reqres.in",
+                                            "first_name": "Byron",
+                                            "last_name": "Fields",
+                                            "avatar": "https://reqres.in/img/faces/10-image.jpg"
+                                        },
+                                        {
+                                            "id": 11,
+                                            "email": "george.edwards@reqres.in",
+                                            "first_name": "George",
+                                            "last_name": "Edwards",
+                                            "avatar": "https://reqres.in/img/faces/11-image.jpg"
+                                        },
+                                        {
+                                            "id": 12,
+                                            "email": "rachel.howell@reqres.in",
+                                            "first_name": "Rachel",
+                                            "last_name": "Howell",
+                                            "avatar": "https://reqres.in/img/faces/12-image.jpg"
+                                        }
+                                    ]
+                                },
+                                "support": {
+                                    "type": "object",
+                                    "properties": {
+                                        "url": {
+                                            "type": "string",
+                                            "default": "https://reqres.in/#support-heading"
+                                        },
+                                        "text": {
+                                            "type": "string",
+                                            "default": "To keep ReqRes free, contributions towards server costs are appreciated!"
+                                        }
+                                    },
+                                    "required": [
+                                        "text",
+                                        "url"
+                                    ]
+                                }
+                            },
+                            "required": [
+                                "data",
+                                "page",
+                                "per_page",
+                                "support",
+                                "total",
+                                "total_pages"
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "spec": {}
+    }
+]
