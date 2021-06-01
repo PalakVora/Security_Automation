@@ -41,10 +41,10 @@ Dangerous Method
     LIST SHOULD NOT CONTAIN VALUE  ${result}  202
 
 Injection Attack
-    [Arguments]  ${Excel_Location}  ${Excel_Sheet_Name}  ${Module_Name}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
+    [Arguments]  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
     log to console  "Executing Injection Attack"
-    log to console  ${Excel_Location}
-    ${result}=  API_wert  ${Excel_Location}  ${Excel_Sheet_Name}  ${Module_Name}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
+    log to console  ${Payload_Excel_Location}
+    ${result}=  API_wert  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
     log to console  ${result}
     LIST SHOULD NOT CONTAIN VALUE  ${result}  200
     LIST SHOULD NOT CONTAIN VALUE  ${result}  201

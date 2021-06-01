@@ -149,12 +149,12 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
 
 # ****************************** IDENTIFY ATTACK AREA, HIT CORRECT REQUEST, CALL FOR SQL INJECTION ************************************
 
-def API_wert(Excel_Location, Excel_Sheet_Name, Module_Name,payload_excel_location,attack_payload_sheetname):
+def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies,payload_excel_location,attack_payload_sheetname):
     result = {}
     payload_param = []
     try:
-        # READ API FROM EXCEL
-        returnvalue = Get_AttackAPI.find_api(Excel_Location, Excel_Sheet_Name, Module_Name)
+        # Get API into variables
+        returnvalue = Get_AttackAPI.find_api(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies)
         
         print("Data from Excel")
         print(returnvalue)
