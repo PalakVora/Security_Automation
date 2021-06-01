@@ -3,16 +3,11 @@ import sys
 # insert at 1, 0 is the script path (or '' in REPL)
 sys.path.insert(1, 'PythonFiles/Utilities')
 
-import Get_AttackAPI
+from Get_AttackAPI import setAPI
 
-#Excel_Location =  "D:/Programming/Application Security/coe-application-security/DataFiles/API.xlsx"
-#Excel_Sheet_Name = "ITSM"  
-#Module_Name = "TestAPIDefend"
-#attack_payload_sheetname = "SQL"
 keyword_payload = ['union','group']
 keyword_internal_server_error = "Internal Server Error"
 keyword_injection_hint = "select"
-#payload_excel_location = "D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx"
 
 
 
@@ -109,7 +104,7 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
                 print("Shhetname" + str(payload_sheetname))
                 print("Row " + str(payload_rowcontents.row - 1) + " = " + str(payload_rowcontents.value), end="" + "\n")
                 #=============================== Replace ==================
-                loaded_payload_replace = attack_area.replace(replace_this, "'")
+                loaded_payload_replace = attack_area.replace(replace_this, str(payload_rowcontents.value))
                 loaded_payload_replace = loaded_payload_replace.replace("$","")
                 print("loaded param")
                 print(loaded_payload_replace)
@@ -154,7 +149,18 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
     payload_param = []
     try:
         # Get API into variables
-        returnvalue = Get_AttackAPI.find_api(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies)
+        
+        object1=setAPI()
+        object1.api_name=api_name
+        object1.http_method=http_method
+        object1.protocol=protocol
+        object1.base_url=base_url
+        object1.relative_url=relative_url
+        object1.request_body=request_body
+        object1.header=header
+        object1.cookies=cookies
+
+        returnvalue = object1.find_api()
         
         print("Data from Excel")
         print(returnvalue)
@@ -351,7 +357,6 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
         print(error)
         traceback.print_stack()
     return result
-
 
 """
 if __name__ == "__main__":

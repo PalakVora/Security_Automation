@@ -13,8 +13,14 @@ ${dbport}  3306
 
 *** Test Cases ***
 TC1
+   [Tags]    db    smoke
+   ${output1} =    Execute SQL String    INSERT INTO apidetails VALUES('TestAPIDefend','POST','https','defendtheweb.net','/playground/sqli2?q=$A$','{"":""}','{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1"}','{"":""}','D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx','SQL');
+   log to console    ${output1}
+   Should Be Equal As Strings    ${output1}    None
+
+TC2
    log to console  "Performing SQL Injection Attack on ITS-ITGue"
-   @{output} =    Query    SELECT * FROM apidetails LIMIT 1;
+   @{output} =    Query    SELECT * FROM apidetails WHERE API_Name='TestAPIDefend';
    Log    @{output}
    ${API_Name} =    Set Variable    ${output[0][0]}
    ${HTTP_Method} =    Set Variable    ${output[0][1]}
