@@ -10,13 +10,21 @@ ${dbpass}
 ${dbhost}  localhost
 ${dbport}  3306
 @{queryResults}
+${API_to_run}
+
+*** Keywords ***
+Comparing
+   Check If Not Exists In Database    SELECT * FROM apidetails WHERE API_Name = '${API_to_run}';
+Insert API
+   Execute SQL String    INSERT INTO apidetails VALUES('${API_to_run}','POST','https','defendtheweb.net','/playground/sqli2?q=$A$','{"":""}','{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1"}','{"":""}','D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx','SQL');
 
 *** Test Cases ***
 TC1
    [Tags]    db    smoke
-   ${output1} =    Execute SQL String    INSERT INTO apidetails VALUES('TestAPIDefend','POST','https','defendtheweb.net','/playground/sqli2?q=$A$','{"":""}','{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1"}','{"":""}','D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx','SQL');
-   log to console    ${output1}
-   Should Be Equal As Strings    ${output1}    None
+   ${status}  ${checking} =    Run Keyword And Ignore Error  Comparing   
+   log to console  ${API_to_run}
+   log to console  ${status}
+   Run Keyword If  '${status}' =='PASS'  Insert API
 
 TC2
    log to console  "Performing SQL Injection Attack on ITS-ITGue"
@@ -34,3 +42,5 @@ TC2
    ${Payload_Sheet_Name} =    Set Variable    ${output[0][9]}
    Injection Attack  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
    
+
+  
