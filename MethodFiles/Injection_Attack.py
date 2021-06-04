@@ -7,9 +7,7 @@ from Get_AttackAPI import setAPI
 
 keyword_payload = ['union','group']
 keyword_internal_server_error = "Internal Server Error"
-keyword_injection_hint = "select"
-
-
+keyword_injection_hint = ["select ","show "," top "," distinct "," from "," from dual"," where "," group by "," order by "," having "," limit "," offset "," union all "," rownum as ","(case "]
 
 # ****************************** SQL INJECTION CONDITIONS ************************************
 
@@ -19,10 +17,11 @@ def check_for_errors(after_hit,keyword_internal_server_error,check_body,original
     if after_hit.status_code == 200:
         print("The functionality didn't respond")
         check_body=check_body.lower()
-        search_sql_query = check_body.index(keyword_injection_hint)
-        if(search_sql_query):
+        if any(x in check_body for x in keyword_injection_hint):
+        #search_sql_query = check_body.index(keyword_injection_hint)
+        #if(search_sql_query):
             print("Query found")
-            print(check_body[search_sql_query:search_sql_query+35])
+            print(check_body[x.index():x.index()+35])
         else:
             print(search_sql_query)
     else:
@@ -51,6 +50,7 @@ def check_for_errors(after_hit,keyword_internal_server_error,check_body,original
 
 # ****************************** HIT API AND GET RESPONSE WITH PAYLOAD ************************************  
            
+
 def hit_it(Method,URL,Body,Header,Cookie):
     result={}
     if(Method == 'GET'):
@@ -79,6 +79,30 @@ def hit_it(Method,URL,Body,Header,Cookie):
             print("Got it")
             print(result)
             return POST , result
+        except Exception as error:
+            print(error)
+            traceback.print_stack()
+     elif(Method == 'PUT'):
+        print("Found PUT API, So Executing It.")
+        try:
+            PUT = requests.put(URL, data=Body, headers=Header)
+            print("Executed POST Method")
+            result['StatusCode'] = str(PUT.status_code)
+            result['ResponseBody'] = str(PUT.text)
+            result['ResponseHeader'] = str(PUT.headers)
+            result['ResponseCookie'] = str(PUT.cookies)
+        except Exception as error:
+            print(error)
+            traceback.print_stack()
+    elif(Method == 'DELETE'):
+        print("Found DELETE API, So Executing It.")
+        try:
+            DELETE = requests.delete(URL, data=Body, headers=Header)
+            print("Executed POST Method")
+            result['StatusCode'] = str(DELETE.status_code)
+            result['ResponseBody'] = str(DELETE.text)
+            result['ResponseHeader'] = str(DELETE.headers)
+            result['ResponseCookie'] = str(DELETE.cookies)
         except Exception as error:
             print(error)
             traceback.print_stack()
@@ -284,14 +308,10 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
     try:
         if(Method == 'GET'):
             print("Found GET API, So Executing It.")
-            try:
-                GET = requests.get(new_url, data=Body, headers=Header,cookies=Cookie)
-                print("Executed GET Method")
-                result['StatusCode'] = str(GET.status_code)
-                result['ResponseBody'] = str(GET.text)
-                result['ResponseHeader'] = str(GET.headers)
-                result['ResponseCookie'] = str(GET.cookies)
-                print(result)
+            abc, result = hit_it("GET",new_url,Body,Header,Cookie)
+
+            print(result)
+            print(abc)
                 
                # stripped = re.search('Ja',GET.text)
                 #print(result['StatusCode'])
@@ -299,66 +319,55 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
                  #   print("SQL Injection found")
                 #else :
                 #    print("Safe from this use case")
-                for i in payload_param:
-                    if i == "URL":
-                        print("inside for")
-                        attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
+            for i in payload_param:
+                if i == "URL":
+                    print("inside for")
+                    attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
                 
                         
                     
         elif (Method == 'POST'):
             print("Found POST API, So Executing It.")
-            try:
-                print("The url")
-                print(type(Cookie))
-                POST = requests.post(new_url, data=Body, headers=Header, cookies=Cookie)
-                print("Executed POST Method")
-                result['StatusCode'] = str(POST.status_code)
-                result['ResponseBody'] = str(POST.text)
-                result['ResponseHeader'] = str(POST.headers)
-                result['ResponseCookie'] = str(POST.cookies)
-                print("Got it before")
-                print(result)
-                for i in payload_param:
-                    if i == "URL":
-                        print("inside for")
-                        attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
+            print("Found GET API, So Executing It.")
+            abc, result = hit_it("POST",URL,Body,Header,Cookie)
+
+            print(result)
+            print(abc)
+            for i in payload_param:
+                if i == "URL":
+                    print("inside for")
+                    attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
+            
         elif(Method == 'PUT'):
-            print("Found PUT API, So Executing It.")
-            try:
-                PUT = requests.put(URL, data=Body, headers=Header)
-                print("Executed POST Method")
-                result['StatusCode'] = str(PUT.status_code)
-                result['ResponseBody'] = str(PUT.text)
-                result['ResponseHeader'] = str(PUT.headers)
-                result['ResponseCookie'] = str(PUT.cookies)
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
+           abc, result = hit_it("PUT",new_url,Body,Header,Cookie)
+
+            print(result)
+            print(abc)
         elif(Method == 'DELETE'):
-            print("Found DELETE API, So Executing It.")
-            try:
-                DELETE = requests.put(URL, data=Body, headers=Header)
-                print("Executed POST Method")
-                result['StatusCode'] = str(DELETE.status_code)
-                result['ResponseBody'] = str(DELETE.text)
-                result['ResponseHeader'] = str(DELETE.headers)
-                result['ResponseCookie'] = str(DELETE.cookies)
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
+            abc, result = hit_it("DELETE",new_url,Body,Header,Cookie)
+
+            print(result)
+            print(abc)
     except Exception as error:
         print(error)
         traceback.print_stack()
     return result
 
+
+
 """
+api_name = "TestAPI"
+http_method="GET"
+protocol="https"
+base_url="reqres.in"
+relative_url="/api/users/$2$"
+request_body='{"":""}'
+header='{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8","Connection": "keep-alive","Referer": "https://reqres.in/","Upgrade-Insecure-Requests": "1"}'
+cookies='{"":""}'
+payload_excel_location = "D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx"
+attack_payload_sheetname = "SQL"
+if __name__ == "__main__":
+    ole = API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies,payload_excel_location,attack_payload_sheetname)
 if __name__ == "__main__":
     API_wert(Excel_Location, Excel_Sheet_Name, Module_Name,payload_excel_location,attack_payload_sheetname)
 
