@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 4.0.2 (Python 3.9.0 on win32)" generated="20210602 06:49:48.637" rpa="false" schemaversion="2">
+<robot generator="Robot 4.0.2 (Python 3.9.0 on win32)" generated="20210617 11:58:57.315" rpa="false" schemaversion="2">
 <suite id="s1" name="Mysqldb" source="D:\COE_Automation\Database\Mysqldb.robot">
 <kw name="Connect To Database" library="DatabaseLibrary" type="SETUP">
 <arg>pymysql</arg>
@@ -10,8 +10,8 @@
 <arg>${dbport}</arg>
 <doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
 connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
-<msg timestamp="20210602 06:49:49.427" level="INFO">Connecting using : pymysql.connect(db=robot, user=root, passwd=, host=localhost, port=3306, charset=None) </msg>
-<status status="PASS" starttime="20210602 06:49:49.414" endtime="20210602 06:49:49.570"/>
+<msg timestamp="20210617 11:58:58.842" level="INFO">Connecting using : pymysql.connect(db=robot, user=root, passwd=, host=localhost, port=3306, charset=None) </msg>
+<status status="PASS" starttime="20210617 11:58:58.796" endtime="20210617 11:58:58.856"/>
 </kw>
 <test id="s1-t1" name="TC1">
 <kw name="Run Keyword And Ignore Error" library="BuiltIn">
@@ -23,93 +23,323 @@ connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
 <kw name="Check If Not Exists In Database" library="DatabaseLibrary">
 <arg>SELECT * FROM apidetails WHERE API_Name = '${API_to_run}';</arg>
 <doc>This is the negation of `check_if_exists_in_database`.</doc>
-<msg timestamp="20210602 06:49:49.572" level="INFO">Executing : Check If Not Exists In Database  |  SELECT * FROM apidetails WHERE API_Name = 'TestAPIDefend44'; </msg>
-<msg timestamp="20210602 06:49:49.572" level="INFO">Executing : Query  |  SELECT * FROM apidetails WHERE API_Name = 'TestAPIDefend44'; </msg>
-<status status="PASS" starttime="20210602 06:49:49.572" endtime="20210602 06:49:49.573"/>
+<msg timestamp="20210617 11:58:58.861" level="INFO">Executing : Check If Not Exists In Database  |  SELECT * FROM apidetails WHERE API_Name = 'TestAPIDefend'; </msg>
+<msg timestamp="20210617 11:58:58.862" level="INFO">Executing : Query  |  SELECT * FROM apidetails WHERE API_Name = 'TestAPIDefend'; </msg>
+<msg timestamp="20210617 11:58:58.867" level="FAIL">Expected to have have no rows from 'SELECT * FROM apidetails WHERE API_Name = 'TestAPIDefend';' but got some rows : (('TestAPIDefend', 'POST', 'https', 'defendtheweb.net', '/playground/sqli2?q=$A$', '{"":""}', '{"Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1", "Connection": "keep-alive", "Content-Type": "application/json"}', '{"":""}', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL'),).</msg>
+<status status="FAIL" starttime="20210617 11:58:58.861" endtime="20210617 11:58:58.868"/>
 </kw>
-<status status="PASS" starttime="20210602 06:49:49.572" endtime="20210602 06:49:49.574"/>
+<status status="FAIL" starttime="20210617 11:58:58.860" endtime="20210617 11:58:58.868"/>
 </kw>
-<msg timestamp="20210602 06:49:49.574" level="INFO">${status} = PASS</msg>
-<msg timestamp="20210602 06:49:49.574" level="INFO">${checking} = None</msg>
-<status status="PASS" starttime="20210602 06:49:49.571" endtime="20210602 06:49:49.574"/>
+<msg timestamp="20210617 11:58:58.868" level="INFO">${status} = FAIL</msg>
+<msg timestamp="20210617 11:58:58.868" level="INFO">${checking} = Expected to have have no rows from 'SELECT * FROM apidetails WHERE API_Name = 'TestAPIDefend';' but got some rows : (('TestAPIDefend', 'POST', 'https', 'defendtheweb.net', '/playground/sqli2?q=$A$', '...</msg>
+<status status="PASS" starttime="20210617 11:58:58.859" endtime="20210617 11:58:58.869"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${API_to_run}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210602 06:49:49.574" endtime="20210602 06:49:49.575"/>
+<status status="PASS" starttime="20210617 11:58:58.870" endtime="20210617 11:58:58.871"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${status}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210602 06:49:49.576" endtime="20210602 06:49:49.576"/>
+<status status="PASS" starttime="20210617 11:58:58.872" endtime="20210617 11:58:58.873"/>
 </kw>
 <kw name="Run Keyword If" library="BuiltIn">
 <arg>'${status}' =='PASS'</arg>
 <arg>Insert API</arg>
 <doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
-<kw name="Insert API">
-<kw name="Execute Sql String" library="DatabaseLibrary">
-<arg>INSERT INTO apidetails VALUES('${API_to_run}','POST','https','defendtheweb.net','/playground/sqli2?q=$A$','{"":""}','{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1"}','{"":""}','D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx','SQL');</arg>
-<doc>Executes the sqlString as SQL commands. Useful to pass arguments to your sql. Set optional input `sansTran` to
-True to run command without an explicit transaction commit or rollback.</doc>
-<msg timestamp="20210602 06:49:49.578" level="INFO">Executing : Execute SQL String  |  INSERT INTO apidetails VALUES('TestAPIDefend44','POST','https','defendtheweb.net','/playground/sqli2?q=$A$','{"":""}','{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1"}','{"":""}','D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx','SQL'); </msg>
-<status status="PASS" starttime="20210602 06:49:49.578" endtime="20210602 06:49:49.579"/>
-</kw>
-<status status="PASS" starttime="20210602 06:49:49.578" endtime="20210602 06:49:49.579"/>
-</kw>
-<status status="PASS" starttime="20210602 06:49:49.577" endtime="20210602 06:49:49.579"/>
+<status status="PASS" starttime="20210617 11:58:58.874" endtime="20210617 11:58:58.875"/>
 </kw>
 <tag>db</tag>
 <tag>smoke</tag>
-<status status="PASS" starttime="20210602 06:49:49.571" endtime="20210602 06:49:49.580"/>
+<status status="PASS" starttime="20210617 11:58:58.857" endtime="20210617 11:58:58.876"/>
 </test>
-<status status="PASS" starttime="20210602 06:49:48.656" endtime="20210602 06:49:49.581"/>
+<test id="s1-t2" name="TC2">
+<kw name="Log To Console" library="BuiltIn">
+<arg>"Performing SQL Injection Attack on ITS-ITGue"</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210617 11:58:58.883" endtime="20210617 11:58:58.885"/>
+</kw>
+<kw name="Query" library="DatabaseLibrary">
+<var>@{output}</var>
+<arg>SELECT * FROM apidetails WHERE API_Name='TestAPIDefend';</arg>
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<msg timestamp="20210617 11:58:58.886" level="INFO">Executing : Query  |  SELECT * FROM apidetails WHERE API_Name='TestAPIDefend'; </msg>
+<msg timestamp="20210617 11:58:58.889" level="INFO">@{output} = [ ('TestAPIDefend', 'POST', 'https', 'defendtheweb.net', '/playground/sqli2?q=$A$', '{"":""}', '{"Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1", "Connection": "keep-alive", "Con...</msg>
+<status status="PASS" starttime="20210617 11:58:58.886" endtime="20210617 11:58:58.889"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>@{output}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20210617 11:58:58.890" level="INFO">('TestAPIDefend', 'POST', 'https', 'defendtheweb.net', '/playground/sqli2?q=$A$', '{"":""}', '{"Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1", "Connection": "keep-alive", "Content-Type": "application/json"}', '{"":""}', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL')</msg>
+<status status="PASS" starttime="20210617 11:58:58.890" endtime="20210617 11:58:58.891"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${API_Name}</var>
+<arg>${output[0][0]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.894" level="INFO">${API_Name} = TestAPIDefend</msg>
+<status status="PASS" starttime="20210617 11:58:58.892" endtime="20210617 11:58:58.894"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${HTTP_Method}</var>
+<arg>${output[0][1]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.899" level="INFO">${HTTP_Method} = POST</msg>
+<status status="PASS" starttime="20210617 11:58:58.895" endtime="20210617 11:58:58.900"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Protocol}</var>
+<arg>${output[0][2]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.904" level="INFO">${Protocol} = https</msg>
+<status status="PASS" starttime="20210617 11:58:58.902" endtime="20210617 11:58:58.904"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Base_URL}</var>
+<arg>${output[0][3]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.907" level="INFO">${Base_URL} = defendtheweb.net</msg>
+<status status="PASS" starttime="20210617 11:58:58.905" endtime="20210617 11:58:58.907"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Relative_URL}</var>
+<arg>${output[0][4]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.910" level="INFO">${Relative_URL} = /playground/sqli2?q=$A$</msg>
+<status status="PASS" starttime="20210617 11:58:58.908" endtime="20210617 11:58:58.910"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Request_Body}</var>
+<arg>${output[0][5]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.912" level="INFO">${Request_Body} = {"":""}</msg>
+<status status="PASS" starttime="20210617 11:58:58.911" endtime="20210617 11:58:58.912"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Header}</var>
+<arg>${output[0][6]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.918" level="INFO">${Header} = {"Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1", "Connection": "keep-alive", "Content-Type": "application/json"}</msg>
+<status status="PASS" starttime="20210617 11:58:58.914" endtime="20210617 11:58:58.918"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Cookies}</var>
+<arg>${output[0][7]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.922" level="INFO">${Cookies} = {"":""}</msg>
+<status status="PASS" starttime="20210617 11:58:58.919" endtime="20210617 11:58:58.922"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Payload_Excel_Location}</var>
+<arg>${output[0][8]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.927" level="INFO">${Payload_Excel_Location} = D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx</msg>
+<status status="PASS" starttime="20210617 11:58:58.924" endtime="20210617 11:58:58.927"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Payload_Sheet_Name}</var>
+<arg>${output[0][9]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210617 11:58:58.930" level="INFO">${Payload_Sheet_Name} = SQL</msg>
+<status status="PASS" starttime="20210617 11:58:58.928" endtime="20210617 11:58:58.930"/>
+</kw>
+<kw name="Injection Attack" library="API">
+<arg>${API_Name}</arg>
+<arg>${HTTP_Method}</arg>
+<arg>${Protocol}</arg>
+<arg>${Base_URL}</arg>
+<arg>${Relative_URL}</arg>
+<arg>${Request_Body}</arg>
+<arg>${Header}</arg>
+<arg>${Cookies}</arg>
+<arg>${Payload_Excel_Location}</arg>
+<arg>${Payload_Sheet_Name}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>"Executing Injection Attack"</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210617 11:58:58.935" endtime="20210617 11:58:58.937"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${Payload_Excel_Location}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210617 11:58:58.937" endtime="20210617 11:58:58.939"/>
+</kw>
+<kw name="API Wert" library="Injection_Attack">
+<var>${result}</var>
+<arg>${API_Name}</arg>
+<arg>${HTTP_Method}</arg>
+<arg>${Protocol}</arg>
+<arg>${Base_URL}</arg>
+<arg>${Relative_URL}</arg>
+<arg>${Request_Body}</arg>
+<arg>${Header}</arg>
+<arg>${Cookies}</arg>
+<arg>${Payload_Excel_Location}</arg>
+<arg>${Payload_Sheet_Name}</arg>
+<msg timestamp="20210617 11:58:58.958" level="INFO">API is
+TestAPIDefend
+POST
+OUtside method
+https
+
+URL 
+
+https://defendtheweb.net/playground/sqli2?q=$A$
+Fdata Body
+{'': ''}
+{'Cookie': 'PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1', 'Connection': 'keep-alive', 'Content-Type': 'application/json'}
+{'': ''}
+{'API': 'TestAPIDefend', 'HTTPMethod': 'POST', 'Protocol': 'https', 'URL': 'https://defendtheweb.net/playground/sqli2?q=$A$', 'Body': {'': ''}, 'Header': {'Cookie': 'PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1', 'Connection': 'keep-alive', 'Content-Type': 'application/json'}, 'Cookie': {'': ''}}
+Data from Excel
+{'API': 'TestAPIDefend', 'HTTPMethod': 'POST', 'Protocol': 'https', 'URL': 'https://defendtheweb.net/playground/sqli2?q=$A$', 'Body': {'': ''}, 'Header': {'Cookie': 'PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1', 'Connection': 'keep-alive', 'Content-Type': 'application/json'}, 'Cookie': {'': ''}}
+https://defendtheweb.net/playground/sqli2?q=A
+['URL']
+No Change in Body
+{'': ''}
+No Change in Header
+{'Cookie': 'PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1', 'Connection': 'keep-alive', 'Content-Type': 'application/json'}
+No Change in Cookie
+{'': ''}
+Found POST API, So Executing It.
+Found GET API, So Executing It.
+Failed to hit request
+cannot unpack non-iterable NoneType object</msg>
+<msg timestamp="20210617 11:58:58.958" level="INFO">File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
+    sys.exit(run_cli())
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\run.py", line 496, in run_cli
+    return RobotFramework().execute_cli(arguments, exit=exit)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
+    rc = self._execute(arguments, options)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\utils\application.py", line 83, in _execute
+    rc = self.main(arguments, **options)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\run.py", line 447, in main
+    result = suite.run(settings)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\model.py", line 296, in run
+    self.visit(runner)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\model\testsuite.py", line 226, in visit
+    visitor.visit_suite(self)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
+    suite.tests.visit(self)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\model\itemlist.py", line 77, in visit
+    item.visit(visitor)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\model\testcase.py", line 130, in visit
+    visitor.visit_test(self)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\suiterunner.py", line 145, in visit_test
+    BodyRunner(self._context, templated=bool(test.template)).run(test.body)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\bodyrunner.py", line 42, in run
+    step.run(self._context, self._run, self._templated)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\model.py", line 78, in run
+    return KeywordRunner(context, run).run(self)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\bodyrunner.py", line 66, in run
+    return runner.run(step, context, self._run)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\userkeywordrunner.py", line 58, in run
+    return_value = self._run(context, kw.args, result)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\userkeywordrunner.py", line 84, in _run
+    exception, return_ = self._execute(context)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\userkeywordrunner.py", line 155, in _execute
+    BodyRunner(context).run(handler.body)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\bodyrunner.py", line 42, in run
+    step.run(self._context, self._run, self._templated)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\model.py", line 78, in run
+    return KeywordRunner(context, run).run(self)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\bodyrunner.py", line 66, in run
+    return runner.run(step, context, self._run)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\librarykeywordrunner.py", line 54, in run
+    return_value = self._run(context, kw.args)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\librarykeywordrunner.py", line 77, in _run
+    return self._run_with_output_captured_and_signal_monitor(runner, context)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\librarykeywordrunner.py", line 99, in _run_with_output_captured_and_signal_monitor
+    return self._run_with_signal_monitoring(runner, context)
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\librarykeywordrunner.py", line 104, in _run_with_signal_monitoring
+    return runner()
+  File "c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages\robot\running\librarykeywordrunner.py", line 92, in &lt;lambda&gt;
+    return lambda: handler(*positional, **named)
+  File "D:\COE_Automation\MethodFiles\Injection_Attack.py", line 275, in API_wert
+    traceback.print_stack()</msg>
+<msg timestamp="20210617 11:58:58.987" level="INFO">${result} = {}</msg>
+<status status="PASS" starttime="20210617 11:58:58.940" endtime="20210617 11:58:58.987"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${result}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210617 11:58:58.988" endtime="20210617 11:58:58.990"/>
+</kw>
+<kw name="List Should Not Contain Value" library="Collections">
+<arg>${result}</arg>
+<arg>200</arg>
+<doc>Fails if the ``value`` is found from ``list``.</doc>
+<status status="PASS" starttime="20210617 11:58:58.990" endtime="20210617 11:58:58.992"/>
+</kw>
+<kw name="List Should Not Contain Value" library="Collections">
+<arg>${result}</arg>
+<arg>201</arg>
+<doc>Fails if the ``value`` is found from ``list``.</doc>
+<status status="PASS" starttime="20210617 11:58:58.992" endtime="20210617 11:58:58.993"/>
+</kw>
+<kw name="List Should Not Contain Value" library="Collections">
+<arg>${result}</arg>
+<arg>202</arg>
+<doc>Fails if the ``value`` is found from ``list``.</doc>
+<status status="PASS" starttime="20210617 11:58:58.994" endtime="20210617 11:58:58.994"/>
+</kw>
+<status status="PASS" starttime="20210617 11:58:58.931" endtime="20210617 11:58:58.995"/>
+</kw>
+<status status="PASS" starttime="20210617 11:58:58.879" endtime="20210617 11:58:58.997"/>
+</test>
+<status status="PASS" starttime="20210617 11:58:57.321" endtime="20210617 11:58:59.003"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="0" skip="0">All Tests</stat>
+<stat pass="2" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
 <stat pass="1" fail="0" skip="0">db</stat>
 <stat pass="1" fail="0" skip="0">smoke</stat>
 </tag>
 <suite>
-<stat pass="1" fail="0" skip="0" id="s1" name="Mysqldb">Mysqldb</stat>
+<stat pass="2" fail="0" skip="0" id="s1" name="Mysqldb">Mysqldb</stat>
 </suite>
 </statistics>
 <errors>
-<msg timestamp="20210602 06:49:48.701" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 2: Importing library 'SeleniumLibrary' failed: ModuleNotFoundError: No module named 'SeleniumLibrary'
+<msg timestamp="20210617 11:58:57.434" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 2: Importing library 'SeleniumLibrary' failed: ModuleNotFoundError: No module named 'SeleniumLibrary'
 Traceback (most recent call last):
   None
 PYTHONPATH:
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
   c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  c:\users\palak.vora\appdata\local\programs\python\python39\DLLs
+  c:\users\palak.vora\appdata\local\programs\python\python39\lib
   C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
-<msg timestamp="20210602 06:49:48.708" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 3: Importing library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
+  c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages</msg>
+<msg timestamp="20210617 11:58:57.442" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 3: Importing library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
 Traceback (most recent call last):
   None
 PYTHONPATH:
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
   c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  c:\users\palak.vora\appdata\local\programs\python\python39\DLLs
+  c:\users\palak.vora\appdata\local\programs\python\python39\lib
   C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
-<msg timestamp="20210602 06:49:48.888" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 6: Importing library 'JSONLibrary' failed: ModuleNotFoundError: No module named 'JSONLibrary'
+  c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages</msg>
+<msg timestamp="20210617 11:58:57.870" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 6: Importing library 'JSONLibrary' failed: ModuleNotFoundError: No module named 'JSONLibrary'
 Traceback (most recent call last):
   None
 PYTHONPATH:
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
   c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  c:\users\palak.vora\appdata\local\programs\python\python39\DLLs
+  c:\users\palak.vora\appdata\local\programs\python\python39\lib
   C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
+  c:\users\palak.vora\appdata\local\programs\python\python39\lib\site-packages</msg>
 </errors>
 </robot>

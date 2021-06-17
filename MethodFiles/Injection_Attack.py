@@ -4,108 +4,37 @@ import sys
 sys.path.insert(1, 'PythonFiles/Utilities')
 
 from Get_AttackAPI import setAPI
-
-keyword_payload = ['union','group']
+from Request_File import requestQuery
+from Check_condition import injectionCondition
+keyword_payload = ["union","group"]
 keyword_internal_server_error = "Internal Server Error"
 keyword_injection_hint = ["select ","show "," top "," distinct "," from "," from dual"," where "," group by "," order by "," having "," limit "," offset "," union all "," rownum as ","(case "]
 
 # ****************************** SQL INJECTION CONDITIONS ************************************
-
-def check_for_errors(after_hit,keyword_internal_server_error,check_body,original_response):
-
-#================================== API didn't respond to injection =============================================
-    if after_hit.status_code == 200:
-        print("The functionality didn't respond")
-        check_body=check_body.lower()
-        if any(x in check_body for x in keyword_injection_hint):
-        #search_sql_query = check_body.index(keyword_injection_hint)
-        #if(search_sql_query):
-            print("Query found")
-            print(check_body[x.index():x.index()+35])
-        else:
-            print(search_sql_query)
-    else:
-        print("The functionality responded")
-
-#================================== Internal server Error =============================================
-    search_server_error = re.search(keyword_internal_server_error,check_body)
-    if after_hit.status_code == 500:
-        print("SQL Injection found")
-        #raise ApiError('GET /tasks/ {}'.format(after_hit.status_code))
-    else:
-        print("Your status code" + str(after_hit.status_code))
-        if (search_server_error):
-            print("SQL Injection found")
-        else :
-            print("Safe from this use case")
-    
- #================================== Loading blank page =============================================   
-    if original_response['ResponseBody'] and original_response['ResponseBody'] != ' ' and original_response['ResponseBody'] != '{}':
-        if (not check_body) or (check_body == ' ') :
-            print("A blank page loaded")
-    elif ( not original_response['ResponseBody']) or (original_response['ResponseBody'] == ' ') or (original_response['ResponseBody'] == '{}') :
-        print("The original was blank itself")
-
+def condition_check(after_hit,keyword_internal_server_error,body_text,result):
+    object1=injectionCondition()
+    object1.after_hit=after_hit
+    object1.keyword_internal_server_error=keyword_internal_server_error
+    object1.check_body=body_text
+    object1.original_response=result
+    object1.check_for_errors()
 
 
 # ****************************** HIT API AND GET RESPONSE WITH PAYLOAD ************************************  
            
 
-def hit_it(Method,URL,Body,Header,Cookie):
-    result={}
-    if(Method == 'GET'):
-        print("Its GET API")
-        try:
-            GET = requests.get(URL, data=Body, headers=Header,cookies=Cookie)
-            print("Executed GET Method for payload")
-            result['StatusCode'] = str(GET.status_code)
-            result['ResponseBody'] = str(GET.text)
-            result['ResponseHeader'] = str(GET.headers)
-            result['ResponseCookie'] = str(GET.cookies)
-            print(result)
-            return GET,result
-        except Exception as error:
-            print(error)
-            traceback.print_stack()
-    elif (Method == 'POST'):
-        print("Found POST API, So Executing It.")
-        try:
-            POST = requests.post(URL, data=Body, headers=Header, cookies=Cookie)
-            print("Executed POST Method")
-            result['StatusCode'] = str(POST.status_code)
-            result['ResponseBody'] = str(POST.text)
-            result['ResponseHeader'] = str(POST.headers)
-            result['ResponseCookie'] = str(POST.cookies)
-            print("Got it")
-            print(result)
-            return POST , result
-        except Exception as error:
-            print(error)
-            traceback.print_stack()
-     elif(Method == 'PUT'):
-        print("Found PUT API, So Executing It.")
-        try:
-            PUT = requests.put(URL, data=Body, headers=Header)
-            print("Executed POST Method")
-            result['StatusCode'] = str(PUT.status_code)
-            result['ResponseBody'] = str(PUT.text)
-            result['ResponseHeader'] = str(PUT.headers)
-            result['ResponseCookie'] = str(PUT.cookies)
-        except Exception as error:
-            print(error)
-            traceback.print_stack()
-    elif(Method == 'DELETE'):
-        print("Found DELETE API, So Executing It.")
-        try:
-            DELETE = requests.delete(URL, data=Body, headers=Header)
-            print("Executed POST Method")
-            result['StatusCode'] = str(DELETE.status_code)
-            result['ResponseBody'] = str(DELETE.text)
-            result['ResponseHeader'] = str(DELETE.headers)
-            result['ResponseCookie'] = str(DELETE.cookies)
-        except Exception as error:
-            print(error)
-            traceback.print_stack()
+def hit_request(method,new_url,body,header,cookie):
+    try:
+        Object1=requestQuery()
+        Object1.method=method
+        Object1.url=new_url
+        Object1.body=body
+        Object1.header=header
+        Object1.cookie=cookie
+        hitreq,res=Object1.hit_it()
+        return hitreq, res
+    except:
+        print("Failed to hit request")
 
 
 # ****************************** LOAD PAYLOAD SHEET AND MODIFY ATTACK AREA ************************************     
@@ -132,8 +61,9 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
                 loaded_payload_replace = loaded_payload_replace.replace("$","")
                 print("loaded param")
                 print(loaded_payload_replace)
-                after_hit, after_hit_result = hit_it(Method,loaded_payload_replace,Body,Header,Cookie)
-                check_for_errors(after_hit,keyword_internal_server_error,after_hit.text,result)
+                after_hit, after_hit_result = hit_request(Method,loaded_payload_replace,Body,Header,Cookie)
+                print("out")
+                condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
                 #=================================== Append with union/group ============================
                 keep_variable = str(payload_rowcontents.value)
                 keep_variable=keep_variable.lower()
@@ -143,23 +73,23 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
                     loaded_payload_append_space = loaded_payload_append_space.replace("$","")
                     print ("WE have a URL with UNION***********************************")
                     print(loaded_payload_append_space)
-                    after_hit, after_hit_result = hit_it(Method,loaded_payload_append_space,Body,Header,Cookie)
-                    check_for_errors(after_hit,keyword_internal_server_error,after_hit.text,result)
+                    after_hit, after_hit_result = hit_request(Method,loaded_payload_append_space,Body,Header,Cookie)
+                    condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
                     #=================================== Append ============================
                 else:
                     loaded_payload_append = attack_area +  str(payload_rowcontents.value)
                     loaded_payload_append = loaded_payload_append.replace("$","")
                     print ("WE have a URL ***********************************")
                     print(loaded_payload_append)
-                    after_hit, after_hit_result = hit_it(Method,loaded_payload_append,Body,Header,Cookie)
-                    check_for_errors(after_hit,keyword_internal_server_error,after_hit.text,result)
+                    after_hit, after_hit_result = hit_request(Method,loaded_payload_append,Body,Header,Cookie)
+                    condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
                     #=================================== Append with space ============================
                     loaded_payload_space = attack_area +  ' ' + str(payload_rowcontents.value)
                     loaded_payload_space = loaded_payload_space.replace("$","")
                     print ("WE have a URL with space ***********************************")
                     print(loaded_payload_space)
-                    after_hit, after_hit_result = hit_it(Method,loaded_payload_space,Body,Header,Cookie)
-                    check_for_errors(after_hit,keyword_internal_server_error,after_hit.text,result)
+                    after_hit, after_hit_result = hit_request(Method,loaded_payload_space,Body,Header,Cookie)
+                    condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
                 
                 print("=======after hit")
                 print(after_hit_result['ResponseBody'])
@@ -308,17 +238,10 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
     try:
         if(Method == 'GET'):
             print("Found GET API, So Executing It.")
-            abc, result = hit_it("GET",new_url,Body,Header,Cookie)
-
+            abc, result = hit_request("GET",new_url,Body,Header,Cookie)
+            print("Why")
             print(result)
             print(abc)
-                
-               # stripped = re.search('Ja',GET.text)
-                #print(result['StatusCode'])
-                #if (stripped):
-                 #   print("SQL Injection found")
-                #else :
-                #    print("Safe from this use case")
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
@@ -329,7 +252,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
         elif (Method == 'POST'):
             print("Found POST API, So Executing It.")
             print("Found GET API, So Executing It.")
-            abc, result = hit_it("POST",URL,Body,Header,Cookie)
+            abc, result = hit_request("POST",new_url,Body,Header,Cookie)
 
             print(result)
             print(abc)
@@ -339,8 +262,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
                     attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
             
         elif(Method == 'PUT'):
-           abc, result = hit_it("PUT",new_url,Body,Header,Cookie)
-
+            abc, result = hit_it("PUT",new_url,Body,Header,Cookie)
             print(result)
             print(abc)
         elif(Method == 'DELETE'):
@@ -352,7 +274,6 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
         print(error)
         traceback.print_stack()
     return result
-
 
 
 """
