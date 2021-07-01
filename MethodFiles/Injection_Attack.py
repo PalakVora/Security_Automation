@@ -1,4 +1,4 @@
-import requests, openpyxl,json, re, traceback, logging
+import openpyxl,json, traceback, logging
 import sys
 # insert at 1, 0 is the script path (or '' in REPL)
 sys.path.insert(1, 'PythonFiles/Utilities')
@@ -6,18 +6,25 @@ sys.path.insert(1, 'PythonFiles/Utilities')
 from Get_AttackAPI import setAPI
 from Request_File import requestQuery
 from Check_condition import injectionCondition
+
 keyword_payload = ["union","group"]
-keyword_internal_server_error = "Internal Server Error"
-keyword_injection_hint = ["select ","show "," top "," distinct "," from "," from dual"," where "," group by "," order by "," having "," limit "," offset "," union all "," rownum as ","(case "]
+
 
 # ****************************** SQL INJECTION CONDITIONS ************************************
-def condition_check(after_hit,keyword_internal_server_error,body_text,result):
+def condition_check(after_hit,body_text,result,after_hit_result):
     object1=injectionCondition()
     object1.after_hit=after_hit
-    object1.keyword_internal_server_error=keyword_internal_server_error
     object1.check_body=body_text
     object1.original_response=result
+    print("did it set?")
+    print(result)
+    print("god knows")
+    print(object1.original_response)
+    object1.after_hit_res=after_hit_result
     object1.check_for_errors()
+    print("Why the flagi s")
+    print(object1.flag)
+    return object1.flag
 
 
 # ****************************** HIT API AND GET RESPONSE WITH PAYLOAD ************************************  
@@ -26,13 +33,19 @@ def condition_check(after_hit,keyword_internal_server_error,body_text,result):
 def hit_request(method,new_url,body,header,cookie):
     try:
         Object1=requestQuery()
-        Object1.method=method
-        Object1.url=new_url
-        Object1.body=body
-        Object1.header=header
-        Object1.cookie=cookie
-        hitreq,res=Object1.hit_it()
-        return hitreq, res
+        if method == "GET":
+            hitreq , res = Object1.hit_get( new_url, body, header, cookie)
+            return hitreq, res
+        elif method == "POST":
+            hitreq, res = Object1.hit_post( new_url, body, header, cookie)
+            return hitreq, res 
+        elif method == "PUT":
+            hitreq, res = Object1.hit_put( new_url, body, header, cookie)
+            return hitreq, res
+        elif method == "DELETE":
+            hitreq, res = Object1.hit_delete( new_url, body, header, cookie)
+            return hitreq, res
+
     except:
         print("Failed to hit request")
 
@@ -40,6 +53,7 @@ def hit_request(method,new_url,body,header,cookie):
 # ****************************** LOAD PAYLOAD SHEET AND MODIFY ATTACK AREA ************************************     
    
 def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname):
+    flag = 0
     print("Something up")
     payload_excel_workbook_location=openpyxl.load_workbook(payload_excel_location)
     replace_this = ""
@@ -57,13 +71,13 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
                 print("Shhetname" + str(payload_sheetname))
                 print("Row " + str(payload_rowcontents.row - 1) + " = " + str(payload_rowcontents.value), end="" + "\n")
                 #=============================== Replace ==================
-                loaded_payload_replace = attack_area.replace(replace_this, str(payload_rowcontents.value))
+                #loaded_payload_replace = attack_area.replace(replace_this, str(payload_rowcontents.value))
+                loaded_payload_replace = attack_area.replace(replace_this, "'")
                 loaded_payload_replace = loaded_payload_replace.replace("$","")
                 print("loaded param")
                 print(loaded_payload_replace)
                 after_hit, after_hit_result = hit_request(Method,loaded_payload_replace,Body,Header,Cookie)
-                print("out")
-                condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
+                flag = condition_check(after_hit,after_hit.text,result,after_hit_result)
                 #=================================== Append with union/group ============================
                 keep_variable = str(payload_rowcontents.value)
                 keep_variable=keep_variable.lower()
@@ -74,7 +88,7 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
                     print ("WE have a URL with UNION***********************************")
                     print(loaded_payload_append_space)
                     after_hit, after_hit_result = hit_request(Method,loaded_payload_append_space,Body,Header,Cookie)
-                    condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
+                    flag =condition_check(after_hit,after_hit.text,result,after_hit_result)
                     #=================================== Append ============================
                 else:
                     loaded_payload_append = attack_area +  str(payload_rowcontents.value)
@@ -82,18 +96,15 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
                     print ("WE have a URL ***********************************")
                     print(loaded_payload_append)
                     after_hit, after_hit_result = hit_request(Method,loaded_payload_append,Body,Header,Cookie)
-                    condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
+                    flag =condition_check(after_hit,after_hit.text,result,after_hit_result)
                     #=================================== Append with space ============================
                     loaded_payload_space = attack_area +  ' ' + str(payload_rowcontents.value)
                     loaded_payload_space = loaded_payload_space.replace("$","")
                     print ("WE have a URL with space ***********************************")
                     print(loaded_payload_space)
                     after_hit, after_hit_result = hit_request(Method,loaded_payload_space,Body,Header,Cookie)
-                    condition_check(after_hit,keyword_internal_server_error,after_hit.text,result)
-                
-                print("=======after hit")
-                print(after_hit_result['ResponseBody'])
-    #return loaded_payload_replace        
+                    flag =condition_check(after_hit,after_hit.text,result,after_hit_result)
+    return flag        
 
 
 # ****************************** IDENTIFY ATTACK AREA, HIT CORRECT REQUEST, CALL FOR SQL INJECTION ************************************
@@ -101,182 +112,135 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
 def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies,payload_excel_location,attack_payload_sheetname):
     result = {}
     payload_param = []
+    flag = 0
+    object1=setAPI()
     try:
         # Get API into variables
         
-        object1=setAPI()
+        
         object1.api_name=api_name
-        object1.http_method=http_method
-        object1.protocol=protocol
+        object1.raw_http_method=http_method
+        object1.raw_protocol=protocol
         object1.base_url=base_url
         object1.relative_url=relative_url
-        object1.request_body=request_body
-        object1.header=header
-        object1.cookies=cookies
+        object1.raw_request_body=json.loads(request_body)
+        object1.raw_header=json.loads(header)
+        object1.raw_cookies=json.loads(cookies)
 
-        returnvalue = object1.find_api()
+        # Make the URL
+        object1.make_url()
+
+        #Replace dollar signs
+        check_url,payload_param=object1.replace_dollar()
+
+    except Exception as error:
+        print("Failed initial API assemble")
         
-        print("Data from Excel")
-        print(returnvalue)
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
     
+    # Hit original request and send for payload
     try:
-        API = returnvalue['API']
-        
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Method = returnvalue['HTTPMethod']
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Protocol = returnvalue['Protocol']
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        URL = returnvalue['URL']
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Body = returnvalue['Body']
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Header = returnvalue['Header']
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Cookie = returnvalue['Cookie']
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Check_URL = re.findall(r'\$(.*?)\$', str(URL))
-        if Check_URL != []:
-            for key in Check_URL:
-                new_url = URL.replace("$","")
-            print(new_url)
-            payload_param = ["URL"]
-            print(payload_param)
-        else:
-            print("No Change in URL")
-    except Exception as error:
-            print(error)
-            traceback.print_stack()
-
-    try:
-        Check_Body = re.findall(r'\$(.*?)\$', str(Body))
-        if Check_Body != []:
-            for key in Check_Body:
-                Body = Body.replace("$", "")
-            print(Body)
-            if not payload_param:
-                payload_param = ["Body"]
-            else:
-                payload_param.append("Body")
-            print(payload_param)
-        else:
-            print("No Change in Body")
-            print(Body)
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-
-    try:
-        Check_Header = re.findall(r'\$(.*?)\$', str(Header))
-        if Check_Header != []:
-            for key in Check_Header:
-                Header = Header.replace("$", "")
-            print(Header)
-            if not payload_param:
-                payload_param = ["Header"]
-            else:
-                payload_param.append("Header")
-            print(payload_param)
-        else:
-            print("No Change in Header")
-            print(Header)
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    try:
-        Check_Cookie = re.findall(r'\$(.*?)\$', str(Cookie))
-        if Check_Cookie != []:
-            for key in Check_Cookie:
-                Cookie = Cookie.replace("$", "")
-            print(Cookie)
-            if not payload_param:
-                payload_param = ["Cookie"]
-            else:
-                payload_param.append("Cookie")
-            print(payload_param)
-        else:
-            print("No Change in Cookie")
-            print(Cookie)
-    except Exception as error:
-        print(error)
-        traceback.print_stack()
-
-    
-    try:
-        if(Method == 'GET'):
+        Object1=requestQuery()
+        if(http_method == 'GET'):
             print("Found GET API, So Executing It.")
-            abc, result = hit_request("GET",new_url,Body,Header,Cookie)
+
+            #Original request
+            try:
+                hitreq,res=Object1.hit_get(object1.url, object1.request_body, object1.header, object1.cookies)
+            except:
+                print("Failed to hit request")
             print("Why")
-            print(result)
-            print(abc)
+            print(res)
+            print(hitreq)
+
+            #Identifying areas for attack and sending for attack
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
-                    attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
+                    flag = attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Body":
+                   flag = attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Header":
+                  flag =  attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Cookie":
+                  flag =  attack_it(http_method,check_url,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                else:
+                    print("No position selected")
+
                 
                         
                     
-        elif (Method == 'POST'):
+        elif (http_method == 'POST'):
             print("Found POST API, So Executing It.")
-            print("Found GET API, So Executing It.")
-            abc, result = hit_request("POST",new_url,Body,Header,Cookie)
+            abc,res=Object1.hit_post(object1.http_method, object1.url, object1.reques_body, object1.header, object1.cookie)
 
-            print(result)
+            print(res)
             print(abc)
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
-                    attack_it(Method,Check_URL,URL,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname)
-            
-        elif(Method == 'PUT'):
-            abc, result = hit_it("PUT",new_url,Body,Header,Cookie)
-            print(result)
-            print(abc)
-        elif(Method == 'DELETE'):
-            abc, result = hit_it("DELETE",new_url,Body,Header,Cookie)
+                    attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Body":
+                    attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Header":
+                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Cookie":
+                    attack_it(http_method,Check_URL,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                else:
+                    print("No position selected")
 
-            print(result)
+        elif(http_method == 'PUT'):
+            abc, res = Object1.hit_put(object1.http_method, object1.url, object1.reques_body, object1.header, object1.cookie)
+            print(res)
             print(abc)
+            for i in payload_param:
+                if i == "URL":
+                    print("inside for")
+                    attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Body":
+                    attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Header":
+                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Cookie":
+                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                else:
+                    print("No position selected")
+
+        elif(http_method == 'DELETE'):
+            abc, result = Object1.hit_delete(object1.http_method, object1.url, object1.reques_body, object1.header, object1.cookie)
+
+            print(res)
+            print(abc)
+            for i in payload_param:
+                if i == "URL":
+                    print("inside for")
+                    attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Body":
+                    attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Header":
+                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                if i == "Cookie":
+                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                else:
+                    print("No position selected")
     except Exception as error:
         print(error)
         traceback.print_stack()
-    return result
+    print(flag)
+    return flag
+
 
 
 """
+api_name = "TestAPIDefend"
+http_method="GET"
+protocol="https"
+base_url="defendtheweb.net"
+relative_url="/playground/sqli2?q=$A$"
+request_body='{"":""}'
+header='{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=fmm8pac5gr2d68cb9dltd2lrql; cookies_dismissed=1"}'
+cookies='{"":""}'
+payload_excel_location = "D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx"
+attack_payload_sheetname = "SQL"
 api_name = "TestAPI"
 http_method="GET"
 protocol="https"

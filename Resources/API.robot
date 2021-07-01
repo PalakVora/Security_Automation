@@ -46,9 +46,9 @@ Injection Attack
     log to console  ${Payload_Excel_Location}
     ${result}=  API_wert  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
     log to console  ${result}
-    LIST SHOULD NOT CONTAIN VALUE  ${result}  200
-    LIST SHOULD NOT CONTAIN VALUE  ${result}  201
-    LIST SHOULD NOT CONTAIN VALUE  ${result}  202
+    Run Keyword If  ${result}== 1  Fail  msg=This is vulnerable to SQL injection
+
+    
 
 Host Header Injection Attack
     [Arguments]  ${Excel_Location}  ${Excel_Sheet_Name}  ${Module_Name}

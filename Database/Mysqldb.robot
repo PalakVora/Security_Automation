@@ -28,7 +28,7 @@ TC1
 
 TC2
    log to console  "Performing SQL Injection Attack on ITS-ITGue"
-   @{output} =    Query    SELECT * FROM apidetails WHERE API_Name='TestAPIDefend';
+   @{output} =    Query    SELECT * FROM apidetails WHERE API_Name='${API_to_run}';
    Log    @{output}
    ${API_Name} =    Set Variable    ${output[0][0]}
    ${HTTP_Method} =    Set Variable    ${output[0][1]}

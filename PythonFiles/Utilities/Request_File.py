@@ -1,74 +1,51 @@
 import requests, traceback, json
+
 verifyssl=True
 
 class requestQuery:
     def __init__(self):
-        self.method=""
-        self.url=""
-        self.body=""
-        self.header=""
-        self.cookie=""
-        #self.hitrequest=""
-        #self.result=""
+        self.result={}
+        self.hitrequest={}
 
-    def hit_it(self):
-        result={}
-        if(self.method == 'GET'):
-            print("Its GET API")
-            try:
-                hitrequest = requests.get(self.url, data=self.body, headers=self.header,cookies=self.cookie, verify=verifyssl)
-                print("Executed GET Method for payload")
-                result['StatusCode'] = str(hitrequest.status_code)
-                result['ResponseBody'] = str(hitrequest.text)
-                result['ResponseHeader'] = str(hitrequest.headers)
-                result['ResponseCookie'] = str(hitrequest.cookies)
-                print("abc")
-                print(result)
-                print("cde")
-                print(hitrequest)
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
-            return hitrequest,result
-        elif (Method == 'POST'):
-            print("Found POST API, So Executing It.")
-            try:
-                hitrequest = requests.post(self.url, data=self.body, headers=self.header,cookies=self.cookie)
-                print("Executed POST Method")
-                result['StatusCode'] = str(hitrequest.status_code)
-                result['ResponseBody'] = str(hitrequest.text)
-                result['ResponseHeader'] = str(hitrequest.headers)
-                result['ResponseCookie'] = str(hitrequest.cookies)
-                print("Got it")
-                print(result)
-                return hitrequest , result
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
-        elif(Method == 'PUT'):
-            print("Found PUT API, So Executing It.")
-            try:
-                hitrequest = requests.put(self.url, data=self.body, headers=self.header,cookies=self.cookie)
-                print("Executed POST Method")
-                result['StatusCode'] = str(hitrequest.status_code)
-                result['ResponseBody'] = str(hitrequest.text)
-                result['ResponseHeader'] = str(hitrequest.headers)
-                result['ResponseCookie'] = str(hitrequest.cookies)
-                return hitrequest , result
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
-        elif(Method == 'DELETE'):
-            print("Found DELETE API, So Executing It.")
-            try:
-                hitrequest = requests.delete(self.url, data=self.body, headers=self.header,cookies=self.cookie)
-                print("Executed POST Method")
-                result['StatusCode'] = str(hitrequest.status_code)
-                result['ResponseBody'] = str(hitrequest.text)
-                result['ResponseHeader'] = str(hitrequest.headers)
-                result['ResponseCookie'] = str(hitrequest.cookies)
-                return hitrequest , result
-            except Exception as error:
-                print(error)
-                traceback.print_stack()
-        
+
+    def set_result(self):
+        try:
+            self.result['StatusCode'] = str(self.hitrequest.status_code)
+            self.result['ResponseBody'] = str(self.hitrequest.text)
+            self.result['ResponseHeader'] = str(self.hitrequest.headers)
+            self.result['ResponseCookie'] = str(self.hitrequest.cookies)
+            print("abc")
+            print(self.result)
+            print("cde")
+            print(self.hitrequest)
+        except Exception as error:
+            print(error)
+            traceback.print_stack()
+    
+    def hit_get(self,url,body,header,cookie):
+        print("Its GET API")
+        self.hitrequest = requests.get(url, data=body, headers=header,cookies=cookie, verify=verifyssl)
+        print("Executed GET Method for payload")
+        self.set_result()
+        return self.hitrequest , self.result
+
+    def hit_post(self,url,body,header,cookie):
+        print("Its POST API")
+        self.hitrequest = requests.post(url, data=body, headers=header,cookies=cookie, verify=verifyssl)
+        print("Executed POST Method for payload")
+        self.set_result()
+        return self.hitrequest , self.result
+
+    def hit_put(self,url,body,header,cookie):
+        print("Its PUT API")
+        self.hitrequest = requests.put(url, data=body, headers=header,cookies=cookie, verify=verifyssl)
+        print("Executed POST Method for payload")
+        self.set_result()
+        return self.hitrequest , self.result
+
+    def hit_delete(self,url,body,header,cookie):
+        print("Its DELETE API")
+        self.hitrequest = requests.delete(url, data=body, headers=header,cookies=cookie, verify=verifyssl)
+        print("Executed DELETE Method for payload")
+        self.set_result()
+        return self.hitrequest , self.result
