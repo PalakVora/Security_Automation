@@ -1,14 +1,11 @@
 *** Settings ***
-Suite Setup       Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpass}    ${dbhost}    ${dbport}
 Library  DatabaseLibrary
 Resource  ../Resources/API.robot
+Variables  ../DataFiles/variables.py
+Suite Setup       Connect To Database    pymysql    ${dbname}    ${dbuser}    ${dbpass}    ${dbhost}    ${dbport}
+
 
 *** Variables ***
-${dbname}  robot
-${dbuser}  root
-${dbpass}  
-${dbhost}  localhost
-${dbport}  3306
 @{queryResults}
 ${API_to_run}
 

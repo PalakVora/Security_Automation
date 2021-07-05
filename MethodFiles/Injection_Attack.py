@@ -9,20 +9,19 @@ from Check_condition import injectionCondition
 
 keyword_payload = ["union","group"]
 
-
 # ****************************** SQL INJECTION CONDITIONS ************************************
-def condition_check(after_hit,body_text,result,after_hit_result):
-    object1=injectionCondition()
+def condition_check(category,elapsed_time,after_hit_time,object1,after_hit,body_text,result,after_hit_result):
+    
     object1.after_hit=after_hit
     object1.check_body=body_text
     object1.original_response=result
-    print("did it set?")
-    print(result)
-    print("god knows")
-    print(object1.original_response)
     object1.after_hit_res=after_hit_result
+    if category == "Time":
+        object1.category = "Time"
+        object1.original_response_time=elapsed_time
+        object1.response_time = after_hit_time
     object1.check_for_errors()
-    print("Why the flagi s")
+    print("Flag")
     print(object1.flag)
     return object1.flag
 
@@ -34,29 +33,89 @@ def hit_request(method,new_url,body,header,cookie):
     try:
         Object1=requestQuery()
         if method == "GET":
-            hitreq , res = Object1.hit_get( new_url, body, header, cookie)
-            return hitreq, res
+            hitreq , res ,time_elapsed = Object1.hit_get( new_url, body, header, cookie)
+            return hitreq, res ,time_elapsed
         elif method == "POST":
-            hitreq, res = Object1.hit_post( new_url, body, header, cookie)
-            return hitreq, res 
+            hitreq, res, time_elapsed = Object1.hit_post( new_url, body, header, cookie)
+            return hitreq, res, time_elapsed 
         elif method == "PUT":
-            hitreq, res = Object1.hit_put( new_url, body, header, cookie)
-            return hitreq, res
+            hitreq, res,time_elapsed = Object1.hit_put( new_url, body, header, cookie)
+            return hitreq, res,time_elapsed
         elif method == "DELETE":
-            hitreq, res = Object1.hit_delete( new_url, body, header, cookie)
-            return hitreq, res
+            hitreq, res, time_elapsed = Object1.hit_delete( new_url, body, header, cookie)
+            return hitreq, res, time_elapsed
 
     except:
         print("Failed to hit request")
 
 
-# ****************************** LOAD PAYLOAD SHEET AND MODIFY ATTACK AREA ************************************     
-   
-def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname):
-    flag = 0
-    print("Something up")
+# ****************************** INDEX OF TIME AND BLIND ************************************     
+def find_index(payload_excel_workbook_location,attack_payload_sheetname):
+    time_index=0
+    blind_index=0
+    for payload_sheetname in payload_excel_workbook_location.worksheets:
+        if payload_sheetname.title == attack_payload_sheetname:
+            for i in range(2, payload_sheetname.max_row):
+                payload_rowcontents = payload_sheetname.cell(row=i,column=1)
+                if str(payload_rowcontents.value) == "SQL Time":
+                    time_index = i
+                if str(payload_rowcontents.value) == "SQL Blind":
+                    blind_index = i
+    return time_index , blind_index  
+
+# ********************************************* LOAD PAYLOAD ***********************************************
+def load_payload(category,elapsed_time,object1,Method,replace_this,Body,Header,Cookie,result,payload_rowcontents,attack_area):
+    #=============================== Replace with '==================
+    loaded_payload_replace = attack_area.replace(replace_this, "'")
+    loaded_payload_replace = loaded_payload_replace.replace("$","")
+    print("loaded param")
+    print(loaded_payload_replace)
+    after_hit, after_hit_result,after_hit_time = hit_request(Method,loaded_payload_replace,Body,Header,Cookie)
+    flag = condition_check(category,elapsed_time,after_hit_time,object1,after_hit,after_hit.text,result,after_hit_result)
+    #================================== Replace with payload ========================
+    loaded_payload_replace = attack_area.replace(replace_this, str(payload_rowcontents.value))
+    loaded_payload_replace = loaded_payload_replace.replace("$","")
+    print("loaded param")
+    print(loaded_payload_replace)
+    after_hit, after_hit_result,after_hit_time = hit_request(Method,loaded_payload_replace,Body,Header,Cookie)
+    flag = condition_check(category,elapsed_time,after_hit_time,object1,after_hit,after_hit.text,result,after_hit_result)
+    #=================================== Append with union/group ============================
+    keep_variable = str(payload_rowcontents.value)
+    keep_variable=keep_variable.lower()
+               
+    if any(x in keep_variable for x in keyword_payload) : 
+        loaded_payload_append_space = attack_area + ' ' + str(payload_rowcontents.value)
+        loaded_payload_append_space = loaded_payload_append_space.replace("$","")
+        print ("WE have a URL with UNION***********************************")
+        print(loaded_payload_append_space)
+        after_hit, after_hit_result,after_hit_time = hit_request(Method,loaded_payload_append_space,Body,Header,Cookie)
+        flag =condition_check(category,elapsed_time,after_hit_time,object1,after_hit,after_hit.text,result,after_hit_result)
+    #=================================== Append ============================
+    else:
+        loaded_payload_append = attack_area +  str(payload_rowcontents.value)
+        loaded_payload_append = loaded_payload_append.replace("$","")
+        print ("WE have a URL ***********************************")
+        print(loaded_payload_append)
+        after_hit, after_hit_result,after_hit_time = hit_request(Method,loaded_payload_append,Body,Header,Cookie)
+        flag =condition_check(category,elapsed_time,after_hit_time,object1,after_hit,after_hit.text,result,after_hit_result)
+    #=================================== Append with space ============================
+        loaded_payload_space = attack_area +  ' ' + str(payload_rowcontents.value)
+        loaded_payload_space = loaded_payload_space.replace("$","")
+        print ("WE have a URL with space ***********************************")
+        print(loaded_payload_space)
+        after_hit, after_hit_result,after_hit_time = hit_request(Method,loaded_payload_space,Body,Header,Cookie)
+        flag =condition_check(category,elapsed_time,after_hit_time,object1,after_hit,after_hit.text,result,after_hit_result)
+    return flag    
+
+# ***************************************** PAYLOAD SHEET , CALL FOR ATTACK **************************************            
+def attack_it(elapsed_time,Method,attack_position,attack_area,Body,Header,Cookie,result,payload_excel_location,attack_payload_sheetname):
     payload_excel_workbook_location=openpyxl.load_workbook(payload_excel_location)
     replace_this = ""
+    flagA = 0
+    flagB = 0
+    flag = 0
+    object1=injectionCondition()
+    time_index ,blind_index = find_index(payload_excel_workbook_location,attack_payload_sheetname)
     for key in attack_position:
         replace_this = key
     for payload_sheetname in payload_excel_workbook_location.worksheets:
@@ -66,44 +125,28 @@ def attack_it(Method,attack_position,attack_area,Body,Header,Cookie,result,paylo
             print("Title of Sheet = " + payload_activeworksheet.title)
             payload_rowlength = payload_sheetname.max_row
             print("Number of Payloads for " + str(payload_sheetname.title) + " = " + str(payload_rowlength - 1))
-            for i in range(2, payload_rowlength + 1):
+            # ------------------------ SQL Error based ---------------------------------------
+            for i in range(2, time_index):
                 payload_rowcontents = payload_sheetname.cell(row=i, column=1)
-                print("Shhetname" + str(payload_sheetname))
-                print("Row " + str(payload_rowcontents.row - 1) + " = " + str(payload_rowcontents.value), end="" + "\n")
-                #=============================== Replace ==================
-                #loaded_payload_replace = attack_area.replace(replace_this, str(payload_rowcontents.value))
-                loaded_payload_replace = attack_area.replace(replace_this, "'")
-                loaded_payload_replace = loaded_payload_replace.replace("$","")
-                print("loaded param")
-                print(loaded_payload_replace)
-                after_hit, after_hit_result = hit_request(Method,loaded_payload_replace,Body,Header,Cookie)
-                flag = condition_check(after_hit,after_hit.text,result,after_hit_result)
-                #=================================== Append with union/group ============================
-                keep_variable = str(payload_rowcontents.value)
-                keep_variable=keep_variable.lower()
-                
-                if any(x in keep_variable for x in keyword_payload) : 
-                    loaded_payload_append_space = attack_area + ' ' + str(payload_rowcontents.value)
-                    loaded_payload_append_space = loaded_payload_append_space.replace("$","")
-                    print ("WE have a URL with UNION***********************************")
-                    print(loaded_payload_append_space)
-                    after_hit, after_hit_result = hit_request(Method,loaded_payload_append_space,Body,Header,Cookie)
-                    flag =condition_check(after_hit,after_hit.text,result,after_hit_result)
-                    #=================================== Append ============================
-                else:
-                    loaded_payload_append = attack_area +  str(payload_rowcontents.value)
-                    loaded_payload_append = loaded_payload_append.replace("$","")
-                    print ("WE have a URL ***********************************")
-                    print(loaded_payload_append)
-                    after_hit, after_hit_result = hit_request(Method,loaded_payload_append,Body,Header,Cookie)
-                    flag =condition_check(after_hit,after_hit.text,result,after_hit_result)
-                    #=================================== Append with space ============================
-                    loaded_payload_space = attack_area +  ' ' + str(payload_rowcontents.value)
-                    loaded_payload_space = loaded_payload_space.replace("$","")
-                    print ("WE have a URL with space ***********************************")
-                    print(loaded_payload_space)
-                    after_hit, after_hit_result = hit_request(Method,loaded_payload_space,Body,Header,Cookie)
-                    flag =condition_check(after_hit,after_hit.text,result,after_hit_result)
+                print("Row ")
+                print(i)
+                print( " = " + str(payload_rowcontents.value), end="" + "\n")
+                category = "Error"
+                flagA = load_payload(category,elapsed_time,object1,Method,replace_this,Body,Header,Cookie,result,payload_rowcontents,attack_area)
+            # ------------------------- SQL Time Based ----------------------------------------------
+            for j in range (time_index+1 , blind_index):
+                payload_rowcontents = payload_sheetname.cell(row=i, column=1)
+                print("Row ")
+                print(i)
+                print(" = " + str(payload_rowcontents.value), end="" + "\n")
+                category = "Time"
+                flagB = load_payload(category,elapsed_time,object1,Method,replace_this,Body,Header,Cookie,result,payload_rowcontents,attack_area)
+           # for k in range (blind_index+1 ,payload_rowlength+1)
+            #    payload_rowcontents = payload_sheetname.cell(row=i, column=1)
+             #   print("Row " + i + " = " + str(payload_rowcontents.value), end="" + "\n")
+              #  category = "Blind"
+               # load_payload(category,elapsed_time,object1,Method,replace_this,Body,Header,Cookie,result,payload_rowcontents,attack_area)
+    flag = flagA or flagB  
     return flag        
 
 
@@ -113,6 +156,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
     result = {}
     payload_param = []
     flag = 0
+    elapsed_time = ""
     object1=setAPI()
     try:
         # Get API into variables
@@ -131,7 +175,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
         object1.make_url()
 
         #Replace dollar signs
-        check_url,payload_param=object1.replace_dollar()
+        dollar_pos,payload_param=object1.replace_dollar()
 
     except Exception as error:
         print("Failed initial API assemble")
@@ -145,7 +189,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
 
             #Original request
             try:
-                hitreq,res=Object1.hit_get(object1.url, object1.request_body, object1.header, object1.cookies)
+                hitreq,res,elapsed_time=Object1.hit_get(object1.url, object1.request_body, object1.header, object1.cookies)
             except:
                 print("Failed to hit request")
             print("Why")
@@ -156,13 +200,13 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
-                    flag = attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    flag = attack_it(elapsed_time,http_method,dollar_pos,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Body":
-                   flag = attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                   flag = attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Header":
-                  flag =  attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                  flag =  attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Cookie":
-                  flag =  attack_it(http_method,check_url,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                  flag =  attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
                 else:
                     print("No position selected")
 
@@ -178,13 +222,13 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
-                    attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Body":
-                    attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Header":
-                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Cookie":
-                    attack_it(http_method,Check_URL,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
                 else:
                     print("No position selected")
 
@@ -195,13 +239,13 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
-                    attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,elapsed_time,http_method,dollar_pos,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Body":
-                    attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,elapsed_time,http_method,dollar_pos,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Header":
-                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Cookie":
-                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
                 else:
                     print("No position selected")
 
@@ -213,13 +257,13 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
-                    attack_it(http_method,check_url,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.raw_url,object1.request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Body":
-                    attack_it(http_method,check_url,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.raw_request_body,object1.header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Header":
-                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.raw_header,object1.cookies,res,payload_excel_location,attack_payload_sheetname)
                 if i == "Cookie":
-                    attack_it(http_method,check_url,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
+                    attack_it(elapsed_time,http_method,dollar_pos,object1.url,object1.request_body,object1.header,object1.raw_cookies,res,payload_excel_location,attack_payload_sheetname)
                 else:
                     print("No position selected")
     except Exception as error:
@@ -227,7 +271,6 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
         traceback.print_stack()
     print(flag)
     return flag
-
 
 
 """
@@ -251,6 +294,11 @@ header='{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/
 cookies='{"":""}'
 payload_excel_location = "D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx"
 attack_payload_sheetname = "SQL"
+
+if __name__ == "__main__":
+    ole = API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies,payload_excel_location,attack_payload_sheetname)
+
+
 if __name__ == "__main__":
     ole = API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,header,cookies,payload_excel_location,attack_payload_sheetname)
 if __name__ == "__main__":

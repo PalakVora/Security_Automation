@@ -6,6 +6,7 @@ class requestQuery:
     def __init__(self):
         self.result={}
         self.hitrequest={}
+        self.response_time=0.0
 
 
     def set_result(self):
@@ -25,16 +26,19 @@ class requestQuery:
     def hit_get(self,url,body,header,cookie):
         print("Its GET API")
         self.hitrequest = requests.get(url, data=body, headers=header,cookies=cookie, verify=verifyssl)
+        print(type(self.hitrequest.elapsed.total_seconds()))
+        self.response_time=self.hitrequest.elapsed.total_seconds()
         print("Executed GET Method for payload")
         self.set_result()
-        return self.hitrequest , self.result
+        return self.hitrequest , self.result, self. response_time
 
     def hit_post(self,url,body,header,cookie):
         print("Its POST API")
         self.hitrequest = requests.post(url, data=body, headers=header,cookies=cookie, verify=verifyssl)
+        self.response_time=self.hitrequest.elapsed.total_seconds()
         print("Executed POST Method for payload")
         self.set_result()
-        return self.hitrequest , self.result
+        return self.hitrequest , self.result , self.response_time
 
     def hit_put(self,url,body,header,cookie):
         print("Its PUT API")
