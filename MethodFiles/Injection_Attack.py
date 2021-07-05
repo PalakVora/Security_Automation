@@ -215,10 +215,9 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
                     
         elif (http_method == 'POST'):
             print("Found POST API, So Executing It.")
-            abc,res=Object1.hit_post(object1.http_method, object1.url, object1.reques_body, object1.header, object1.cookie)
-
-            print(res)
-            print(abc)
+            #==== Original request ==============
+            abc,res,elapsed_time=Object1.hit_post(object1.url, object1.request_body, object1.header, object1.cookies)
+            #============= Payload request==========
             for i in payload_param:
                 if i == "URL":
                     print("inside for")
@@ -233,7 +232,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
                     print("No position selected")
 
         elif(http_method == 'PUT'):
-            abc, res = Object1.hit_put(object1.http_method, object1.url, object1.reques_body, object1.header, object1.cookie)
+            abc, res,elapsed_time = Object1.hit_put(object1.url, object1.reques_body, object1.header, object1.cookies)
             print(res)
             print(abc)
             for i in payload_param:
@@ -250,7 +249,7 @@ def API_wert(api_name,http_method,protocol,base_url,relative_url,request_body,he
                     print("No position selected")
 
         elif(http_method == 'DELETE'):
-            abc, result = Object1.hit_delete(object1.http_method, object1.url, object1.reques_body, object1.header, object1.cookie)
+            abc, result , elapsed_time= Object1.hit_delete(object1.url, object1.reques_body, object1.header, object1.cookies)
 
             print(res)
             print(abc)

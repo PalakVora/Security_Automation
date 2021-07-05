@@ -28,6 +28,7 @@ class setAPI:
 
 
     def replace_dollar(self):
+        payload_param=[]
         try:
             check_url = re.findall(r'\$(.*?)\$', str(self.raw_url))
             if check_url != []:
@@ -46,7 +47,7 @@ class setAPI:
             check_body = re.findall(r'\$(.*?)\$', str(self.raw_request_body))
             if check_body != []:
                 for key in check_body:
-                    self.request_body = self.raw_request_body.replace("$", "")
+                    self.request_body = str(self.raw_request_body).replace("$", "")
                 print(self.request_body)
                 if not payload_param:
                     payload_param = ["Body"]
