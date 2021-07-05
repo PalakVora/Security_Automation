@@ -44,9 +44,9 @@ Injection Attack
     [Arguments]  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
     log to console  "Executing Injection Attack"
     log to console  ${Payload_Excel_Location}
-    ${result}=  API_wert  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
+    ${result}=  API_injection  ${API_Name}  ${HTTP_Method}  ${Protocol}  ${Base_URL}  ${Relative_URL}  ${Request_Body}  ${Header}  ${Cookies}  ${Payload_Excel_Location}  ${Payload_Sheet_Name}
     log to console  ${result}
-    Run Keyword If  ${result}!= 0  Fail  msg=This is vulnerable to SQL injection
+    Run Keyword If  ${result}!= 0  Fail  msg=This might be vulnerable to SQL injection
 
     
 

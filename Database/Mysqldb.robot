@@ -14,7 +14,8 @@ Comparing
    Check If Not Exists In Database    SELECT * FROM apidetails WHERE API_Name = '${API_to_run}';
 Insert API
    Execute SQL String    INSERT INTO apidetails VALUES('${API_to_run}','POST','https','defendtheweb.net','/playground/sqli2?q=$A$','{"":""}','{"Content-Type": "application/json","Connection": "keep-alive","Cookie": "PHPSESSID=84uven6il9vls9pl92anohvki0; cookies_dismissed=1"}','{"":""}','D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx','SQL');
-
+Delete API
+   Execute SQL String    DELETE FROM apidetails WHERE 0
 *** Test Cases ***
 TC1
    [Tags]    db    smoke
