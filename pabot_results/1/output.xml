@@ -1,709 +1,854 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 3.2.2 (Python 3.6.2 on win32)" generated="20201210 15:07:05.724" rpa="false">
-<suite id="s1" name="Batch Profile" source="C:\Users\palak\Downloads\coe-application-security\TestCases\Agent\API\ACMs\Batch_Profile.robot">
-<test id="s1-t1" name="TC_002 HTTP Strict Transport Security Check on Batch Profile API">
-<kw name="Log To Console" library="BuiltIn">
-<doc>Logs the given message to the console.</doc>
-<arguments>
-<arg>"Performing HTTP Strict Transport Security Check on Batch Profile API"</arg>
-</arguments>
-<status status="PASS" starttime="20201210 15:07:17.834" endtime="20201210 15:07:17.834"></status>
+<robot generator="Robot 4.0.2 (Python 3.9.0 on win32)" generated="20210707 15:25:20.847" rpa="false" schemaversion="2">
+<suite id="s1" name="Mysqldb" source="D:\COE_Automation\Database\Mysqldb.robot">
+<kw name="Connect To Database" library="DatabaseLibrary" type="SETUP">
+<arg>pymysql</arg>
+<arg>${dbname}</arg>
+<arg>${dbuser}</arg>
+<arg>${dbpass}</arg>
+<arg>${dbhost}</arg>
+<arg>${dbport}</arg>
+<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
+connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
+<msg timestamp="20210707 15:25:21.871" level="INFO">Connecting using : pymysql.connect(db=robot, user=root, passwd=, host=localhost, port=3306, charset=None) </msg>
+<status status="PASS" starttime="20210707 15:25:21.837" endtime="20210707 15:25:21.883"/>
 </kw>
-<kw name="HTTP Strict Transport Security" library="API">
-<arguments>
-<arg>${Excel_Location}</arg>
-<arg>Agent</arg>
-<arg>ACMS_Batch_Profiles_API</arg>
-</arguments>
+<test id="s1-t1" name="TC2 Injection Detection">
 <kw name="Log To Console" library="BuiltIn">
+<arg>"Performing SQL Injection Attack on ITS-ITGue"</arg>
 <doc>Logs the given message to the console.</doc>
-<arguments>
-<arg>"Executing HTTP Strict Transport Security Check"</arg>
-</arguments>
-<status status="PASS" starttime="20201210 15:07:17.844" endtime="20201210 15:07:17.846"></status>
+<status status="PASS" starttime="20210707 15:25:21.884" endtime="20210707 15:25:21.885"/>
 </kw>
-<kw name="HSTS" library="HTTP_Strict_Transport_Security">
-<arguments>
-<arg>${Excel_Location}</arg>
-<arg>${Excel_Sheet_Name}</arg>
-<arg>${Module_Name}</arg>
-</arguments>
-<assign>
+<kw name="Query" library="DatabaseLibrary">
+<var>@{output}</var>
+<arg>SELECT * FROM apidetails WHERE API_Name='${API_to_run}';</arg>
+<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
+input `sansTran` to True to run command without an explicit transaction commit or rollback.
+Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
+<msg timestamp="20210707 15:25:21.887" level="INFO">Executing : Query  |  SELECT * FROM apidetails WHERE API_Name='TestAPI'; </msg>
+<msg timestamp="20210707 15:25:21.891" level="INFO">@{output} = [ ('TestAPI', 'GET', 'https', 'reqres.in', '/api/users/$2$', '{"":""}', '{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Conn...</msg>
+<status status="PASS" starttime="20210707 15:25:21.886" endtime="20210707 15:25:21.891"/>
+</kw>
+<kw name="Log" library="BuiltIn">
+<arg>@{output}</arg>
+<doc>Logs the given message with the given level.</doc>
+<msg timestamp="20210707 15:25:21.892" level="INFO">('TestAPI', 'GET', 'https', 'reqres.in', '/api/users/$2$', '{"":""}', '{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}', '{"":""}', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL')</msg>
+<status status="PASS" starttime="20210707 15:25:21.892" endtime="20210707 15:25:21.892"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${API_Name}</var>
+<arg>${output[0][0]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.896" level="INFO">${API_Name} = TestAPI</msg>
+<status status="PASS" starttime="20210707 15:25:21.893" endtime="20210707 15:25:21.896"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${HTTP_Method}</var>
+<arg>${output[0][1]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.899" level="INFO">${HTTP_Method} = GET</msg>
+<status status="PASS" starttime="20210707 15:25:21.896" endtime="20210707 15:25:21.899"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Protocol}</var>
+<arg>${output[0][2]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.902" level="INFO">${Protocol} = https</msg>
+<status status="PASS" starttime="20210707 15:25:21.900" endtime="20210707 15:25:21.903"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Base_URL}</var>
+<arg>${output[0][3]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.906" level="INFO">${Base_URL} = reqres.in</msg>
+<status status="PASS" starttime="20210707 15:25:21.903" endtime="20210707 15:25:21.906"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Relative_URL}</var>
+<arg>${output[0][4]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.909" level="INFO">${Relative_URL} = /api/users/$2$</msg>
+<status status="PASS" starttime="20210707 15:25:21.906" endtime="20210707 15:25:21.909"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Request_Body}</var>
+<arg>${output[0][5]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.913" level="INFO">${Request_Body} = {"":""}</msg>
+<status status="PASS" starttime="20210707 15:25:21.910" endtime="20210707 15:25:21.913"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Header}</var>
+<arg>${output[0][6]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.916" level="INFO">${Header} = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}</msg>
+<status status="PASS" starttime="20210707 15:25:21.913" endtime="20210707 15:25:21.916"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Cookies}</var>
+<arg>${output[0][7]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.920" level="INFO">${Cookies} = {"":""}</msg>
+<status status="PASS" starttime="20210707 15:25:21.917" endtime="20210707 15:25:21.920"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Payload_Excel_Location}</var>
+<arg>${output[0][8]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.923" level="INFO">${Payload_Excel_Location} = D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx</msg>
+<status status="PASS" starttime="20210707 15:25:21.920" endtime="20210707 15:25:21.923"/>
+</kw>
+<kw name="Set Variable" library="BuiltIn">
+<var>${Payload_Sheet_Name}</var>
+<arg>${output[0][9]}</arg>
+<doc>Returns the given values which can then be assigned to a variables.</doc>
+<msg timestamp="20210707 15:25:21.927" level="INFO">${Payload_Sheet_Name} = SQL</msg>
+<status status="PASS" starttime="20210707 15:25:21.923" endtime="20210707 15:25:21.927"/>
+</kw>
+<kw name="Injection Attack" library="API">
+<arg>${API_Name}</arg>
+<arg>${HTTP_Method}</arg>
+<arg>${Protocol}</arg>
+<arg>${Base_URL}</arg>
+<arg>${Relative_URL}</arg>
+<arg>${Request_Body}</arg>
+<arg>${Header}</arg>
+<arg>${Cookies}</arg>
+<arg>${Payload_Excel_Location}</arg>
+<arg>${Payload_Sheet_Name}</arg>
+<kw name="Log To Console" library="BuiltIn">
+<arg>"Executing Injection Attack"</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210707 15:25:21.930" endtime="20210707 15:25:21.930"/>
+</kw>
+<kw name="Log To Console" library="BuiltIn">
+<arg>${Payload_Excel_Location}</arg>
+<doc>Logs the given message to the console.</doc>
+<status status="PASS" starttime="20210707 15:25:21.930" endtime="20210707 15:25:21.931"/>
+</kw>
+<kw name="API Injection" library="Injection_Attack">
 <var>${result}</var>
-</assign>
-<msg timestamp="20201210 15:07:17.987" level="INFO">Opening Excel
-Opened Excel
-Title of Sheet = Agent
-Row 1 = API_Name
-Row 2 = GATEWAY_API_POST
-Row 3 = GATEWAY_API_GET
-Row 4 = GATEWAY_API_DELETE
-Row 5 = Mapping_API
-Row 6 = Packages_API
-Row 7 = Asset_API
-Row 8 = ACMS_Summary_API
-Row 9 = ACMS_Batch_Profiles_API
-Module Found : ACMS_Batch_Profiles_API in Row - 9 of Worksheet - Agent
-ACMS_Batch_Profiles_API
-ACMS_Batch_Profiles_API
-ACMS_Batch_Profiles_API
-POST
-Protocol : http
-Parameter Observed in Protocol : 
-[]
-BaseURL = internal-qaplatformagentconfigurationserv-1810934581.us-east-1.elb.amazonaws.com
-
-RelativeURL = /agent-configuration/v1/batchProfiles
-
-'Protocol'
-Data from find_vulnerable_parameters 
-{}
-'Protocol'
-'URL'
-'Body'
-'Header'
-'Cookie'
-local variable 'URL' referenced before assignment
-local variable 'Body' referenced before assignment
-local variable 'Header' referenced before assignment
-local variable 'Cookie' referenced before assignment
-Found POST API, So Executing It.
-local variable 'URL' referenced before assignment</msg>
-<msg timestamp="20201210 15:07:17.987" level="INFO">File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 164, in HSTS
-    returnvalue = readexcel(Excel_Location, Excel_Sheet_Name, Module_Name)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 113, in readexcel
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 187, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 193, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 199, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 205, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 211, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 223, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 236, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 250, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 263, in HSTS
-    traceback.print_stack()
-  File "c:\python36\lib\runpy.py", line 193, in _run_module_as_main
-    "__main__", mod_spec)
-  File "c:\python36\lib\runpy.py", line 85, in _run_code
-    exec(code, run_globals)
-  File "C:\Python36\Scripts\robot.exe\__main__.py", line 7, in &lt;module&gt;
-    sys.exit(run_cli())
-  File "c:\python36\lib\site-packages\robot\run.py", line 492, in run_cli
-    return RobotFramework().execute_cli(arguments, exit=exit)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 46, in execute_cli
-    rc = self._execute(arguments, options)
-  File "c:\python36\lib\site-packages\robot\utils\application.py", line 83, in _execute
-    rc = self.main(arguments, **options)
-  File "c:\python36\lib\site-packages\robot\run.py", line 443, in main
-    result = suite.run(settings)
-  File "c:\python36\lib\site-packages\robot\running\model.py", line 259, in run
-    self.visit(runner)
-  File "c:\python36\lib\site-packages\robot\model\testsuite.py", line 174, in visit
-    visitor.visit_suite(self)
-  File "c:\python36\lib\site-packages\robot\model\visitor.py", line 88, in visit_suite
-    suite.tests.visit(self)
-  File "c:\python36\lib\site-packages\robot\model\itemlist.py", line 77, in visit
-    item.visit(visitor)
-  File "c:\python36\lib\site-packages\robot\model\testcase.py", line 78, in visit
-    visitor.visit_test(self)
-  File "c:\python36\lib\site-packages\robot\running\runner.py", line 134, in visit_test
-    test.template).run_steps(test.keywords.normal)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args, result)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 82, in _run
-    exception, return_ = self._execute(context)
-  File "c:\python36\lib\site-packages\robot\running\userkeywordrunner.py", line 153, in _execute
-    StepRunner(context).run_steps(handler.keywords)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 40, in run_steps
-    self.run_step(step)
-  File "c:\python36\lib\site-packages\robot\running\steprunner.py", line 61, in run_step
-    return runner.run(step, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 56, in run
-    return_value = self._run(context, kw.args)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 79, in _run
-    return self._run_with_output_captured_and_signal_monitor(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 101, in _run_with_output_captured_and_signal_monitor
-    return self._run_with_signal_monitoring(runner, context)
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 106, in _run_with_signal_monitoring
-    return runner()
-  File "c:\python36\lib\site-packages\robot\running\librarykeywordrunner.py", line 94, in &lt;lambda&gt;
-    return lambda: handler(*positional, **named)
-  File "C:\Users\palak\Downloads\coe-application-security\MethodFiles\HTTP_Strict_Transport_Security.py", line 291, in HSTS
-    traceback.print_stack()</msg>
-<msg timestamp="20201210 15:07:17.996" level="INFO">${result} = {}</msg>
-<status status="PASS" starttime="20201210 15:07:17.846" endtime="20201210 15:07:17.996"></status>
+<arg>${API_Name}</arg>
+<arg>${HTTP_Method}</arg>
+<arg>${Protocol}</arg>
+<arg>${Base_URL}</arg>
+<arg>${Relative_URL}</arg>
+<arg>${Request_Body}</arg>
+<arg>${Header}</arg>
+<arg>${Cookies}</arg>
+<arg>${Payload_Excel_Location}</arg>
+<arg>${Payload_Sheet_Name}</arg>
+<msg timestamp="20210707 15:25:56.663" level="INFO">Messy
+https://reqres.in/api/users/' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.252686
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/" {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.297712
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2" {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.238257
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 " {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.280153
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/'%20; {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.273632
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2'%20; {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.252012
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 '%20; {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.279868
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/=%20' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+1.332712
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2=%20' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.335428
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 =%20' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.259275
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/=%20; {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.2774
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2=%20; {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.261726
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 =%20; {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.222901
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\x23 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.260184
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\x23 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.235324
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \x23 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.265765
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\x27 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.254136
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\x27 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.283134
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \x27 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.265315
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\x3D%20\x3B' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.287001
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\x3D%20\x3B' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.455359
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \x3D%20\x3B' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.340156
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\x3D%20\x27 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.303151
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\x3D%20\x27 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.233244
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \x3D%20\x27 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.249407
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\x27\x4F\x52 SELECT * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.273214
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\x27\x4F\x52 SELECT * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.26472
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \x27\x4F\x52 SELECT * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.249467
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\x27\x6F\x72 SELECT * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.281502
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\x27\x6F\x72 SELECT * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.250583
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \x27\x6F\x72 SELECT * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.38533
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/'or%20select * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.23864
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2'or%20select * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.272946
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 'or%20select * {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.258411
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/'%20or%20''=' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.258699
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2'%20or%20''=' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.270046
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 '%20or%20''=' {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.474691
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/%2A%28%7C%28mail%3D%2A%29%29 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.441632
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2%2A%28%7C%28mail%3D%2A%29%29 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.258341
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 %2A%28%7C%28mail%3D%2A%29%29 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.250512
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/*(|(objectclass=*)) {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.359838
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2*(|(objectclass=*)) {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.654884
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 *(|(objectclass=*)) {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.638271
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/%2A%28%7C%28objectclass%3D%2A%29%29 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.49952
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2%2A%28%7C%28objectclass%3D%2A%29%29 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.522126
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 %2A%28%7C%28objectclass%3D%2A%29%29 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.782003
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users///* {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+1.540086
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2//* {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.541982
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 //* {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.543994
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/| {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.595568
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2| {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.673897
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 | {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.527023
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/\\ {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.512804
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2\\ {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+1.2963
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 \\ {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.566894
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+1.587816
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.517487
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+The functionality respond
+original response
+0.30431
+After hit response
+0.503186
+Safe from this use case maybe
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.236915
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.249107
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.276925
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.39133
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.326457
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.366303
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.256334
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.245201
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.364276
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.258819
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.295903
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.248018
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.298914
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.289482
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.277067
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.250566
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.263979
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.322934
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.259902
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.367439
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.25224
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.26762
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.301001
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.395055
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.267084
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.251492
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.271464
+Messy
+https://reqres.in/api/users/ ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.339264
+Messy
+https://reqres.in/api/users/2 ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.374839
+Messy
+https://reqres.in/api/users/2  ' order by 2-- {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}
+original response
+0.30431
+After hit response
+0.269921
+No position selected</msg>
+<msg timestamp="20210707 15:25:56.664" level="INFO">${result} = 0</msg>
+<status status="PASS" starttime="20210707 15:25:21.931" endtime="20210707 15:25:56.664"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
+<arg>${result}</arg>
 <doc>Logs the given message to the console.</doc>
-<arguments>
-<arg>${result}</arg>
-</arguments>
-<status status="PASS" starttime="20201210 15:07:17.996" endtime="20201210 15:07:17.996"></status>
+<status status="PASS" starttime="20210707 15:25:56.665" endtime="20210707 15:25:56.666"/>
 </kw>
-<kw name="Dictionary Should Not Contain Value" library="Collections">
-<doc>Fails if ``value`` is found from ``dictionary``.</doc>
-<arguments>
-<arg>${result}</arg>
-<arg>200</arg>
-</arguments>
-<status status="PASS" starttime="20201210 15:07:17.996" endtime="20201210 15:07:17.998"></status>
+<kw name="Run Keyword If" library="BuiltIn">
+<arg>${result}!= 0</arg>
+<arg>Fail</arg>
+<arg>msg=This might be vulnerable to SQL injection</arg>
+<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
+<status status="PASS" starttime="20210707 15:25:56.666" endtime="20210707 15:25:56.667"/>
 </kw>
-<kw name="Dictionary Should Not Contain Value" library="Collections">
-<doc>Fails if ``value`` is found from ``dictionary``.</doc>
-<arguments>
-<arg>${result}</arg>
-<arg>201</arg>
-</arguments>
-<status status="PASS" starttime="20201210 15:07:17.998" endtime="20201210 15:07:17.998"></status>
+<status status="PASS" starttime="20210707 15:25:21.927" endtime="20210707 15:25:56.668"/>
 </kw>
-<kw name="Dictionary Should Not Contain Value" library="Collections">
-<doc>Fails if ``value`` is found from ``dictionary``.</doc>
-<arguments>
-<arg>${result}</arg>
-<arg>202</arg>
-</arguments>
-<status status="PASS" starttime="20201210 15:07:17.998" endtime="20201210 15:07:17.998"></status>
-</kw>
-<status status="PASS" starttime="20201210 15:07:17.844" endtime="20201210 15:07:17.998"></status>
-</kw>
-<status status="PASS" starttime="20201210 15:07:17.834" endtime="20201210 15:07:17.998" critical="yes"></status>
+<tag>perform_injection</tag>
+<status status="PASS" starttime="20210707 15:25:21.883" endtime="20210707 15:25:56.668"/>
 </test>
-<status status="PASS" starttime="20201210 15:07:05.734" endtime="20201210 15:07:17.998"></status>
+<status status="PASS" starttime="20210707 15:25:20.869" endtime="20210707 15:25:56.670"/>
 </suite>
 <statistics>
 <total>
-<stat pass="1" fail="0">Critical Tests</stat>
-<stat pass="1" fail="0">All Tests</stat>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
+<stat pass="1" fail="0" skip="0">perform_injection</stat>
 </tag>
 <suite>
-<stat pass="1" fail="0" id="s1" name="Batch Profile">Batch Profile</stat>
+<stat pass="1" fail="0" skip="0" id="s1" name="Mysqldb">Mysqldb</stat>
 </suite>
 </statistics>
 <errors>
-<msg timestamp="20201210 15:07:10.816" level="ERROR">Error in file 'C:\Users\palak\Downloads\coe-application-security\Resources\API.robot' on line 3: Importing test library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
+<msg timestamp="20210707 15:25:20.943" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 2: Importing library 'SeleniumLibrary' failed: ModuleNotFoundError: No module named 'SeleniumLibrary'
 Traceback (most recent call last):
   None
 PYTHONPATH:
-  C:\Python36\Scripts\robot.exe
-  c:\python36\python36.zip
-  c:\python36\DLLs
-  c:\python36\lib
-  c:\python36
-  c:\python36\lib\site-packages</msg>
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
+  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
+<msg timestamp="20210707 15:25:20.947" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 3: Importing library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
+  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
+<msg timestamp="20210707 15:25:21.167" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 6: Importing library 'JSONLibrary' failed: ModuleNotFoundError: No module named 'JSONLibrary'
+Traceback (most recent call last):
+  None
+PYTHONPATH:
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
+  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
+  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
+  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
 </errors>
 </robot>

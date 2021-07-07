@@ -1,13 +1,13 @@
 ==============================================================================
-Batch Profile                                                                 
+Mysqldb                                                                       
 ==============================================================================
-TC_002 HTTP Strict Transport Security Check on Batch Profile API      "Performing HTTP Strict Transport Security Check on Batch Profile API"
-"Executing HTTP Strict Transport Security Check"
-{}
+TC2 Injection Detection                                               "Performing SQL Injection Attack on ITS-ITGue"
+"Executing Injection Attack"
+D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx
+0
 | PASS |
 ------------------------------------------------------------------------------
-Batch Profile                                                         | PASS |
-1 critical test, 1 passed, 0 failed
-1 test total, 1 passed, 0 failed
+Mysqldb                                                               | PASS |
+1 test, 1 passed, 0 failed
 ==============================================================================
-Output:  C:\Users\palak\Downloads\coe-application-security\pabot_results\1\output.xml
+Output:  D:\COE_Automation\pabot_results\1\output.xml

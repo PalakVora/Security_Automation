@@ -21,54 +21,35 @@ class injectionCondition:
         self.category=""
         self.response_time=0.0
         self.original_response_time=0.0
+
+    def check_for_common_statement(self,statement,body):
+        for x in statement:
+            if (x in body):
+                print("Maybe vulnerable to SQL Injection")
+                print(body[x.index():x.index()+35])
+                self.flag=self.flag+1
+
 #================================ Error statements in response ===================================    
     def check_for_statement(self):
         self.check_done=1
-        try:
+        try:    
+            self.time_check()
             if self.check_body.index(self.keyword_injection_hint):
-                print("Vulnerable")
                 self.flag=self.flag+1
                 search_sql_query = self.check_body.index(self.keyword_injection_hint)
-                print("ket's gp")
-                print(search_sql_query)
                 if(search_sql_query):
                     index1 =search_sql_query
                     index2 = search_sql_query+35
                     print(self.check_body[index1:index2])
-            elif (x for x in self.mysql_keyword if(x in self.check_body)):
-                print("Maybe vulnerable to injection")
-                print(self.mysql_keyword)
-                print(self.check_body[x.index():x.index()+35])
-                self.flag=self.flag+1
-                #raise Exception
-            elif (x for x in self.postgre_keyword if(x in elf.check_body)):
-                print("Maybe vulnerable to injection")
-                print(self.check_body[x.index():x.index()+35])
-                self.flag=self.flag+1
-            elif (x for x in self.microsoft_sql_server_keyword if(x in elf.check_body)):
-                print("Maybe vulnerable to injection")
-                print(self.check_body[x.index():x.index()+35])
-                self.flag=self.flag+1
-            elif (x for x in self.microsoft_access_keyword if(x in elf.check_body)):
-                print("Maybe vulnerable to injection")
-                self.flag=self.flag+1
-                print(self.check_body[x.index():x.index()+35])
-            elif (x for x in self.oracle_keyword if(x in elf.check_body)):
-                print("Maybe vulnerable to injection")
-                self.flag=self.flag+1
-                print(self.check_body[x.index():x.index()+35])
-            elif (x for x in self.idm_db2_keyword if(x in elf.check_body)):
-                print("Maybe vulnerable to injection")
-                self.flag=self.flag+1
-                print(self.check_body[x.index():x.index()+35])
-            elif (x for x in self.sqlite_keyword if(x in elf.check_body)):
-                print("Maybe vulnerable to injection")
-                print(self.check_body[x.index():x.index()+35])
-                self.flag=self.flag+1
-            else:
-                print("No statements")
+            self.check_for_common_statement(self.mysql_keyword,self.check_body)
+            self.check_for_common_statement(self.postgre_keyword,self.check_body)
+            self.check_for_common_statement(self.microsoft_sql_server_keyword,self.check_body)
+            self.check_for_common_statement(self.microsoft_access_keyword,self.check_body)
+            self.check_for_common_statement(self.oracle_keyword,self.check_body)
+            self.check_for_common_statement(self.idm_db2_keyword,self.check_body)
+            self.check_for_common_statement(self.sqlite_keyword,self.check_body) 
         except:
-            print("error")    
+            pass
 # ================================================= Error based ==========================================
     def error_check(self):
         self.check_done=0
@@ -84,11 +65,9 @@ class injectionCondition:
                         #raise ("Sql Query spoted")
                 else:
                     print("Couldn't snif")
-                        #return 1
             except Exception as error:
                 print("No query")
-            print("Outta here")
-            #return 1
+            
         else:
             print("The functionality respond")
 
@@ -97,23 +76,19 @@ class injectionCondition:
             self.check_for_statement()
 
 #================================== Internal server Error =============================================
-        print("Or here")
         search_server_error = re.search(self.keyword_internal_server_error,self.check_body)
         if self.after_hit.status_code == 500:
-            print("SQL Injection found")
+            print("SQL Injection found maybe")
             self.flag=self.flag+1
             #raise ApiError('GET /tasks/ {}'.format(after_hit.status_code))
         else:
-            print("Your status code" + str(self.after_hit.status_code))
             if (search_server_error):
-                print("SQL Injection found")
+                print("SQL Injection found maybe")
                 self.flag=self.flag+1
             else :
-                print("Safe from this use case")
+                print("Safe from this use case maybe")
     
  #================================== Loading blank page =============================================   
-        print("or it is here")
-        print(self.original_response)
         if self.original_response['ResponseBody'] and self.original_response['ResponseBody'] != ' ' and self.original_response['ResponseBody'] != '{}':
             if (not self.check_body) or (self.check_body == ' ') :
                 print("A blank page loaded")
@@ -121,14 +96,17 @@ class injectionCondition:
         elif (not self.original_response['ResponseBody']) or (self.original_response['ResponseBody'] == ' ') or (self.original_response['ResponseBody'] == '{}') :
             print("The original was blank itself")
        
-
-        print(self.flag)
 #============================================= TIME CHECK=========================================
     def time_check(self):
         print("original response")
         print(self.original_response_time)
         print("After hit response")
         print(self.response_time)
+        time_compare =0.0
+        if (self.original_response_time<self.response_time):
+            time_compare=self.response_time-self.original_response_time
+            if(time_compare>=2):
+                self.flag=self.flag+1
 
 #==================================== Category wise check =======================================
     def check_for_errors(self):
@@ -154,4 +132,11 @@ if __name__ =="__main__":
                 print("Headers are different have a look")
                 print(self.after_hit_res['ResponseHeader'])
                 return 1
+    time_compare =0.0
+    if (self.original_response_time<self.response_time):
+        time_compare=self.response_time-self.original_response_time
+        if(time_compare>=0.4):
+            self.flag=self.flag+1
+
+
 '''
