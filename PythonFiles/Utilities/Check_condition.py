@@ -21,26 +21,29 @@ class injectionCondition:
         self.category=""
         self.response_time=0.0
         self.original_response_time=0.0
+        self.payload=""
 
     def check_for_common_statement(self,statement,body):
         for x in statement:
             if (x in body):
-                print("Maybe vulnerable to SQL Injection")
                 print(body[x.index():x.index()+35])
                 self.flag=self.flag+1
 
 #================================ Error statements in response ===================================    
-    def check_for_statement(self):
+    def check_for_statement(self,previous_payload):
         self.check_done=1
         try:    
-            self.time_check()
             if self.check_body.index(self.keyword_injection_hint):
                 self.flag=self.flag+1
                 search_sql_query = self.check_body.index(self.keyword_injection_hint)
                 if(search_sql_query):
-                    index1 =search_sql_query
-                    index2 = search_sql_query+35
-                    print(self.check_body[index1:index2])
+                    if previous_payload == self.payload:
+                        pass
+                    else:
+                        index1 =search_sql_query
+                        index2 = search_sql_query+35
+                        print("Payload" + self.payload)
+                        print(self.check_body[index1:index2])
             self.check_for_common_statement(self.mysql_keyword,self.check_body)
             self.check_for_common_statement(self.postgre_keyword,self.check_body)
             self.check_for_common_statement(self.microsoft_sql_server_keyword,self.check_body)
@@ -51,42 +54,39 @@ class injectionCondition:
         except:
             pass
 # ================================================= Error based ==========================================
-    def error_check(self):
+    def error_check(self,previous_payload):
         self.check_done=0
     #================================== API didn't respond to injection =============================================
         self.check_body=self.check_body.lower()
         if self.after_hit.status_code == 200:
-            print("The functionality didn't respond")
-            self.flag=self.flag+1
             try:
-                self.check_for_statement()
+                self.time_check()
+                self.check_for_statement(previous_payload)
                 if self.flag > 1:
                     return 1
                         #raise ("Sql Query spoted")
                 else:
-                    print("Couldn't snif")
+                    pass
             except Exception as error:
-                print("No query")
+                pass
             
         else:
-            print("The functionality respond")
+            pass
 
 # --------------------------------------- Check common error messages ------------------------------------------------    
         if self.check_done != 1:
-            self.check_for_statement()
+            self.check_for_statement(previous_payload)
 
 #================================== Internal server Error =============================================
         search_server_error = re.search(self.keyword_internal_server_error,self.check_body)
         if self.after_hit.status_code == 500:
-            print("SQL Injection found maybe")
             self.flag=self.flag+1
             #raise ApiError('GET /tasks/ {}'.format(after_hit.status_code))
         else:
             if (search_server_error):
-                print("SQL Injection found maybe")
                 self.flag=self.flag+1
             else :
-                print("Safe from this use case maybe")
+                pass
     
  #================================== Loading blank page =============================================   
         if self.original_response['ResponseBody'] and self.original_response['ResponseBody'] != ' ' and self.original_response['ResponseBody'] != '{}':
@@ -94,26 +94,22 @@ class injectionCondition:
                 print("A blank page loaded")
                 self.flag=self.flag+1
         elif (not self.original_response['ResponseBody']) or (self.original_response['ResponseBody'] == ' ') or (self.original_response['ResponseBody'] == '{}') :
-            print("The original was blank itself")
+            pass
        
 #============================================= TIME CHECK=========================================
     def time_check(self):
-        print("original response")
-        print(self.original_response_time)
-        print("After hit response")
-        print(self.response_time)
         time_compare =0.0
         if (self.original_response_time<self.response_time):
             time_compare=self.response_time-self.original_response_time
-            if(time_compare>=2):
+            if(time_compare>=10):
                 self.flag=self.flag+1
 
 #==================================== Category wise check =======================================
-    def check_for_errors(self):
+    def check_for_errors(self,previous_payload):
         if self.category == "Time":
             self.time_check()
         else:
-            self.error_check()
+            self.error_check(previous_payload)
 
         
 '''
