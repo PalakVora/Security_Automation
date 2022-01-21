@@ -165,13 +165,14 @@ def API_injection(api_name,http_method,protocol,base_url,relative_url,request_bo
     try:
         # Get API into variables
         
-        
         object1.api_name=api_name
+       
         object1.raw_http_method=http_method
         object1.raw_protocol=protocol
         object1.base_url=base_url
         object1.relative_url=relative_url
         object1.raw_request_body=json.loads(request_body)
+        
         object1.raw_header=json.loads(header)
         object1.raw_cookies=json.loads(cookies)
 

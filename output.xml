@@ -1,175 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<robot generator="Robot 4.0.2 (Python 3.9.0 on win32)" generated="20210707 16:41:34.573" rpa="false" schemaversion="2">
-<suite id="s1" name="Mysqldb" source="D:\COE_Automation\Database\Mysqldb.robot">
-<kw name="Connect To Database" library="DatabaseLibrary" type="SETUP">
-<arg>pymysql</arg>
-<arg>${dbname}</arg>
-<arg>${dbuser}</arg>
-<arg>${dbpass}</arg>
-<arg>${dbhost}</arg>
-<arg>${dbport}</arg>
-<doc>Loads the DB API 2.0 module given `dbapiModuleName` then uses it to
-connect to the database using `dbName`, `dbUsername`, and `dbPassword`.</doc>
-<msg timestamp="20210707 16:41:35.598" level="INFO">Connecting using : pymysql.connect(db=robot, user=root, passwd=, host=localhost, port=3306, charset=None) </msg>
-<status status="PASS" starttime="20210707 16:41:35.553" endtime="20210707 16:41:35.610"/>
-</kw>
-<test id="s1-t1" name="TC1 Databse Connection">
-<kw name="Run Keyword And Ignore Error" library="BuiltIn">
-<var>${status}</var>
-<var>${checking}</var>
-<arg>Comparing</arg>
-<doc>Runs the given keyword with the given arguments and ignores possible error.</doc>
-<kw name="Comparing">
-<kw name="Check If Not Exists In Database" library="DatabaseLibrary">
-<arg>SELECT * FROM apidetails WHERE API_Name = '${API_to_run}';</arg>
-<doc>This is the negation of `check_if_exists_in_database`.</doc>
-<msg timestamp="20210707 16:41:35.613" level="INFO">Executing : Check If Not Exists In Database  |  SELECT * FROM apidetails WHERE API_Name = 'TestAPI'; </msg>
-<msg timestamp="20210707 16:41:35.613" level="INFO">Executing : Query  |  SELECT * FROM apidetails WHERE API_Name = 'TestAPI'; </msg>
-<msg timestamp="20210707 16:41:35.618" level="FAIL">Expected to have have no rows from 'SELECT * FROM apidetails WHERE API_Name = 'TestAPI';' but got some rows : (('TestAPI', 'GET', 'https', 'reqres.in', '/api/users/$2$', '{"":""}', '{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}', '{"":""}', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL'),).</msg>
-<status status="FAIL" starttime="20210707 16:41:35.613" endtime="20210707 16:41:35.618"/>
-</kw>
-<status status="FAIL" starttime="20210707 16:41:35.612" endtime="20210707 16:41:35.618"/>
-</kw>
-<msg timestamp="20210707 16:41:35.619" level="INFO">${status} = FAIL</msg>
-<msg timestamp="20210707 16:41:35.619" level="INFO">${checking} = Expected to have have no rows from 'SELECT * FROM apidetails WHERE API_Name = 'TestAPI';' but got some rows : (('TestAPI', 'GET', 'https', 'reqres.in', '/api/users/$2$', '{"":""}', '{"Accept": "text/h...</msg>
-<status status="PASS" starttime="20210707 16:41:35.612" endtime="20210707 16:41:35.619"/>
-</kw>
-<kw name="Log To Console" library="BuiltIn">
-<arg>${API_to_run}</arg>
-<doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210707 16:41:35.619" endtime="20210707 16:41:35.620"/>
-</kw>
-<kw name="Log To Console" library="BuiltIn">
-<arg>${status}</arg>
-<doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210707 16:41:35.621" endtime="20210707 16:41:35.622"/>
-</kw>
-<kw name="Run Keyword If" library="BuiltIn">
-<arg>'${status}' =='PASS'</arg>
-<arg>Insert API</arg>
-<doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
-<status status="PASS" starttime="20210707 16:41:35.622" endtime="20210707 16:41:35.623"/>
-</kw>
-<tag>database_connection</tag>
-<status status="PASS" starttime="20210707 16:41:35.611" endtime="20210707 16:41:35.623"/>
-</test>
-<test id="s1-t2" name="TC2 Injection Detection">
+<robot generator="Robot 4.0.2 (Python 3.9.0 on win32)" generated="20220121 06:40:41.677" rpa="false" schemaversion="2">
+<suite id="s1" name="Mysqldb" source="C:\Users\palak.vora\OneDrive - ConnectWise, Inc\Automation_Testing\Security_Automation\Database\Mysqldb.robot">
+<test id="s1-t1" name="TC2">
 <kw name="Log To Console" library="BuiltIn">
 <arg>"Performing SQL Injection Attack on ITS-ITGue"</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210707 16:41:35.627" endtime="20210707 16:41:35.627"/>
-</kw>
-<kw name="Query" library="DatabaseLibrary">
-<var>@{output}</var>
-<arg>SELECT * FROM apidetails WHERE API_Name='${API_to_run}';</arg>
-<doc>Uses the input `selectStatement` to query for the values that will be returned as a list of tuples. Set optional
-input `sansTran` to True to run command without an explicit transaction commit or rollback.
-Set optional input `returnAsDict` to True to return values as a list of dictionaries.</doc>
-<msg timestamp="20210707 16:41:35.629" level="INFO">Executing : Query  |  SELECT * FROM apidetails WHERE API_Name='TestAPI'; </msg>
-<msg timestamp="20210707 16:41:35.630" level="INFO">@{output} = [ ('TestAPI', 'GET', 'https', 'reqres.in', '/api/users/$2$', '{"":""}', '{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Conn...</msg>
-<status status="PASS" starttime="20210707 16:41:35.628" endtime="20210707 16:41:35.630"/>
-</kw>
-<kw name="Log" library="BuiltIn">
-<arg>@{output}</arg>
-<doc>Logs the given message with the given level.</doc>
-<msg timestamp="20210707 16:41:35.632" level="INFO">('TestAPI', 'GET', 'https', 'reqres.in', '/api/users/$2$', '{"":""}', '{"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}', '{"":""}', 'D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx', 'SQL')</msg>
-<status status="PASS" starttime="20210707 16:41:35.631" endtime="20210707 16:41:35.632"/>
-</kw>
-<kw name="Get API">
-<var>${API_to_run}</var>
-<var>${API_Name}</var>
-<var>${HTTP_Method}</var>
-<var>${Protocol}</var>
-<var>${Base_URL}</var>
-<var>${Relative_URL}</var>
-<var>${Request_Body}</var>
-<var>${Header}</var>
-<var>${Cookies}</var>
-<var>${Payload_Excel_Location}</var>
-<var>${Payload_Sheet_Name}</var>
-<arg>@{output}</arg>
-<kw name="Set Variable" library="BuiltIn">
-<var>${API_Name}</var>
-<arg>${output[0][0]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.634" level="INFO">${API_Name} = TestAPI</msg>
-<status status="PASS" starttime="20210707 16:41:35.633" endtime="20210707 16:41:35.634"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${HTTP_Method}</var>
-<arg>${output[0][1]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.637" level="INFO">${HTTP_Method} = GET</msg>
-<status status="PASS" starttime="20210707 16:41:35.635" endtime="20210707 16:41:35.637"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Protocol}</var>
-<arg>${output[0][2]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.638" level="INFO">${Protocol} = https</msg>
-<status status="PASS" starttime="20210707 16:41:35.637" endtime="20210707 16:41:35.638"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Base_URL}</var>
-<arg>${output[0][3]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.639" level="INFO">${Base_URL} = reqres.in</msg>
-<status status="PASS" starttime="20210707 16:41:35.638" endtime="20210707 16:41:35.639"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Relative_URL}</var>
-<arg>${output[0][4]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.640" level="INFO">${Relative_URL} = /api/users/$2$</msg>
-<status status="PASS" starttime="20210707 16:41:35.639" endtime="20210707 16:41:35.641"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Request_Body}</var>
-<arg>${output[0][5]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.644" level="INFO">${Request_Body} = {"":""}</msg>
-<status status="PASS" starttime="20210707 16:41:35.641" endtime="20210707 16:41:35.644"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Header}</var>
-<arg>${output[0][6]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.647" level="INFO">${Header} = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}</msg>
-<status status="PASS" starttime="20210707 16:41:35.644" endtime="20210707 16:41:35.647"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Cookies}</var>
-<arg>${output[0][7]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.648" level="INFO">${Cookies} = {"":""}</msg>
-<status status="PASS" starttime="20210707 16:41:35.647" endtime="20210707 16:41:35.648"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Payload_Excel_Location}</var>
-<arg>${output[0][8]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.649" level="INFO">${Payload_Excel_Location} = D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx</msg>
-<status status="PASS" starttime="20210707 16:41:35.648" endtime="20210707 16:41:35.649"/>
-</kw>
-<kw name="Set Variable" library="BuiltIn">
-<var>${Payload_Sheet_Name}</var>
-<arg>${output[0][9]}</arg>
-<doc>Returns the given values which can then be assigned to a variables.</doc>
-<msg timestamp="20210707 16:41:35.652" level="INFO">${Payload_Sheet_Name} = SQL</msg>
-<status status="PASS" starttime="20210707 16:41:35.650" endtime="20210707 16:41:35.652"/>
-</kw>
-<msg timestamp="20210707 16:41:35.654" level="INFO">${API_to_run} = TestAPI</msg>
-<msg timestamp="20210707 16:41:35.654" level="INFO">${API_Name} = TestAPI</msg>
-<msg timestamp="20210707 16:41:35.654" level="INFO">${HTTP_Method} = GET</msg>
-<msg timestamp="20210707 16:41:35.654" level="INFO">${Protocol} = https</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Base_URL} = reqres.in</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Relative_URL} = /api/users/$2$</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Request_Body} = {"":""}</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Header} = {"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8", "Referer": "https://reqres.in/", "Connection": "keep-alive", "Upgrade-Insecure-Requests": "1"}</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Cookies} = {"":""}</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Payload_Excel_Location} = D:/Programming/Application Security/coe-application-security/DataFiles/Payloads.xlsx</msg>
-<msg timestamp="20210707 16:41:35.655" level="INFO">${Payload_Sheet_Name} = SQL</msg>
-<status status="PASS" starttime="20210707 16:41:35.633" endtime="20210707 16:41:35.655"/>
+<status status="PASS" starttime="20220121 06:40:42.330" endtime="20220121 06:40:42.331"/>
 </kw>
 <kw name="Injection Attack" library="API">
 <arg>${API_Name}</arg>
@@ -185,12 +21,12 @@ Set optional input `returnAsDict` to True to return values as a list of dictiona
 <kw name="Log To Console" library="BuiltIn">
 <arg>"Executing Injection Attack"</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210707 16:41:35.658" endtime="20210707 16:41:35.660"/>
+<status status="PASS" starttime="20220121 06:40:42.333" endtime="20220121 06:40:42.333"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${Payload_Excel_Location}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210707 16:41:35.660" endtime="20210707 16:41:35.662"/>
+<status status="PASS" starttime="20220121 06:40:42.334" endtime="20220121 06:40:42.334"/>
 </kw>
 <kw name="API Injection" library="Injection_Attack">
 <var>${result}</var>
@@ -204,43 +40,42 @@ Set optional input `returnAsDict` to True to return values as a list of dictiona
 <arg>${Cookies}</arg>
 <arg>${Payload_Excel_Location}</arg>
 <arg>${Payload_Sheet_Name}</arg>
-<msg timestamp="20210707 16:42:41.662" level="INFO">https://reqres.in/api/users/2 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Referer': 'https://reqres.in/', 'Connection': 'keep-alive', 'Upgrade-Insecure-Requests': '1'} {'': ''}</msg>
-<msg timestamp="20210707 16:42:41.662" level="INFO">${result} = 0</msg>
-<status status="PASS" starttime="20210707 16:41:35.662" endtime="20210707 16:42:41.662"/>
+<msg timestamp="20220121 06:41:20.106" level="INFO">https://reqres.in/api/users/2 {'': ''} {'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8', 'Connection': 'keep-alive', 'Referer': 'https://reqres.in/', 'Upgrade-Insecure-Requests': '1'} {'': ''}</msg>
+<msg timestamp="20220121 06:41:20.106" level="INFO">${result} = 0</msg>
+<status status="PASS" starttime="20220121 06:40:42.334" endtime="20220121 06:41:20.106"/>
 </kw>
 <kw name="Log To Console" library="BuiltIn">
 <arg>${result}</arg>
 <doc>Logs the given message to the console.</doc>
-<status status="PASS" starttime="20210707 16:42:41.662" endtime="20210707 16:42:41.663"/>
+<status status="PASS" starttime="20220121 06:41:20.107" endtime="20220121 06:41:20.107"/>
 </kw>
 <kw name="Run Keyword If" library="BuiltIn">
 <arg>${result}!= 0</arg>
 <arg>Fail</arg>
 <arg>msg=This might be vulnerable to SQL injection</arg>
 <doc>Runs the given keyword with the given arguments, if ``condition`` is true.</doc>
-<status status="PASS" starttime="20210707 16:42:41.664" endtime="20210707 16:42:41.664"/>
+<status status="PASS" starttime="20220121 06:41:20.107" endtime="20220121 06:41:20.108"/>
 </kw>
-<status status="PASS" starttime="20210707 16:41:35.656" endtime="20210707 16:42:41.664"/>
+<status status="PASS" starttime="20220121 06:40:42.331" endtime="20220121 06:41:20.108"/>
 </kw>
 <tag>perform_injection</tag>
-<status status="PASS" starttime="20210707 16:41:35.625" endtime="20210707 16:42:41.665"/>
+<status status="PASS" starttime="20220121 06:40:42.330" endtime="20220121 06:41:20.108"/>
 </test>
-<status status="PASS" starttime="20210707 16:41:34.579" endtime="20210707 16:42:41.667"/>
+<status status="PASS" starttime="20220121 06:40:41.679" endtime="20220121 06:41:20.110"/>
 </suite>
 <statistics>
 <total>
-<stat pass="2" fail="0" skip="0">All Tests</stat>
+<stat pass="1" fail="0" skip="0">All Tests</stat>
 </total>
 <tag>
-<stat pass="1" fail="0" skip="0">database_connection</stat>
 <stat pass="1" fail="0" skip="0">perform_injection</stat>
 </tag>
 <suite>
-<stat pass="2" fail="0" skip="0" id="s1" name="Mysqldb">Mysqldb</stat>
+<stat pass="1" fail="0" skip="0" id="s1" name="Mysqldb">Mysqldb</stat>
 </suite>
 </statistics>
 <errors>
-<msg timestamp="20210707 16:41:34.667" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 2: Importing library 'SeleniumLibrary' failed: ModuleNotFoundError: No module named 'SeleniumLibrary'
+<msg timestamp="20220121 06:40:41.712" level="ERROR">Error in file 'C:\Users\palak.vora\OneDrive - ConnectWise, Inc\Automation_Testing\Security_Automation\Resources\API.robot' on line 2: Importing library 'SeleniumLibrary' failed: ModuleNotFoundError: No module named 'SeleniumLibrary'
 Traceback (most recent call last):
   None
 PYTHONPATH:
@@ -251,18 +86,7 @@ PYTHONPATH:
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
   C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
   C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
-<msg timestamp="20210707 16:41:34.673" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 3: Importing library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
-Traceback (most recent call last):
-  None
-PYTHONPATH:
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\Scripts\robot.exe
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39
-  c:\users\palak.vora\appdata\local\programs\python\python39\python39.zip
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\DLLs
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib
-  C:\Users\palak.vora\AppData\Roaming\Python\Python39\site-packages
-  C:\Users\palak.vora\AppData\Local\Programs\Python\Python39\lib\site-packages</msg>
-<msg timestamp="20210707 16:41:34.902" level="ERROR">Error in file 'D:\COE_Automation\Resources\API.robot' on line 6: Importing library 'JSONLibrary' failed: ModuleNotFoundError: No module named 'JSONLibrary'
+<msg timestamp="20220121 06:40:41.717" level="ERROR">Error in file 'C:\Users\palak.vora\OneDrive - ConnectWise, Inc\Automation_Testing\Security_Automation\Resources\API.robot' on line 3: Importing library 'JSpringBotGlobal' failed: ModuleNotFoundError: No module named 'JSpringBotGlobal'
 Traceback (most recent call last):
   None
 PYTHONPATH:
